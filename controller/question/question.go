@@ -1,8 +1,11 @@
 package question
 
+// TODO: entityを直接読んでるのをどうにかアレする
+
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	// "github.com/zenazn/goji"
 	"github.com/zenazn/goji/web"
@@ -16,9 +19,13 @@ import (
 //    title, name, content
 func Create(c web.C, w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Create called")
-	title := c.URLParams["title"]
-	name := c.URLParams["name"]
-	content := c.URLParams["content"]
+	title := r.FormValue("title")
+	name := r.FormValue("name")
+	content := r.FormValue("content")
+	if len(title) < 0 || len(content) < 0 {
+		helper.RenderJson(map[string]interface{}{"error": "empty data"}, w)
+		return
+	}
 	db := entity.Db
 	if err := question.Init(title, name, content).Insert(db); err != nil {
 		panic(err)
@@ -26,7 +33,7 @@ func Create(c web.C, w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "create faq success !")
 }
 
-func Get(w http.ResponseWriter, r *http.Request) {
+func Get(c web.C, w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("question Get called")
 	db := entity.Db
 	ques := question.SelectAll(db)
@@ -35,11 +42,30 @@ func Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	obj := map[string]interface{}{"questions": ques}
-	// for _, que := range ques {
-	// 	fmt.Fprintf(w, "%s", que)
-	// }
 	helper.RenderJson(obj, w)
 }
 
-func GetById(w http.ResponseWriter, r *http.Request) {
+func GetById(c web.C, w http.ResponseWriter, r *http.Request) {
+	s_id := c.URLParams["id"]
+	id, err := strconv.Atoi(s_id)
+	if err != nil {
+		helper.RenderJson(map[string]interface{}{"error": "id type should be int"}, w)
+		return
+	}
+	helper.RenderJson(question.SelectById(entity.Db, id), w)
+}
+
+func Delete(c web.C, w http.ResponseWriter, r *http.Request) {
+	s_id := c.URLParams["id"]
+	id, err := strconv.Atoi(s_id)
+	if err != nil {
+		helper.RenderJson(map[string]interface{}{"error": "id type should be int"}, w)
+		return
+	}
+	err = question.Delete(entity.Db, id)
+	if err != nil {
+		helper.RenderJson(err, w)
+		return
+	}
+	helper.RenderJson(map[string]interface{}{"status": "success"}, w)
 }

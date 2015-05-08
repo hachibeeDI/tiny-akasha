@@ -21,6 +21,7 @@ func InitRoute() {
 	goji.Get(v1API("/question"), question.Get)
 	// goji.Get(v1API("/question/show"), question.Get)
 	goji.Get(v1API("/question/id/:id"), question.GetById)
+	goji.Delete(v1API("/question/id/:id"), question.Delete)
 	// goji.Get(v1API("/question/user/:username"), nil)
 
 	// http.Handle("/static/*", http.FileServer(http.Dir("/template/static/")))
