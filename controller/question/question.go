@@ -30,6 +30,10 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("question Get called")
 	db := entity.Db
 	ques := question.SelectAll(db)
+	if ques == nil {
+		helper.RenderJson(map[string]interface{}{"error": "no data"}, w)
+		return
+	}
 	obj := map[string]interface{}{"questions": ques}
 	// for _, que := range ques {
 	// 	fmt.Fprintf(w, "%s", que)

@@ -13,16 +13,32 @@ type Question struct {
 	Content  string `meddler:"content" json:"content"`
 }
 
+func CreateTable(db entity.DB) {
+	if _, err := db.Exec(
+		`create table
+			question(
+				id integer primary key
+				, title varchar(40)
+				, username varchar(40)
+				, content varchar(254)
+			)`); err != nil {
+		panic(err)
+	}
+}
+
 func Init(title, username, content string) *Question {
 	return &Question{Title: title, Username: username, Content: content}
 }
 
 func (q *Question) Insert(db entity.DB) error {
-	return meddler.Insert(db, "question", &q)
+	return meddler.Insert(db, "question", q)
 }
 
 func SelectAll(db entity.DB) []*Question {
 	var ques []*Question
-	meddler.QueryAll(db, &ques, "select * from question")
+	err := meddler.QueryAll(db, &ques, "select * from question")
+	if err != nil {
+		panic(err)
+	}
 	return ques
 }

@@ -17,34 +17,22 @@ import (
 )
 
 func PrePareDB() *sql.DB {
-	db, err := sql.Open("sqlite3", ":memory:")
+	db, err := sql.Open("sqlite3", "./test.db")
 	if err != nil {
 		panic(err)
 	}
 
-	if _, err := db.Exec("drop table if exists questions"); err != nil {
+	if _, err := db.Exec("drop table if exists question"); err != nil {
 		panic(err)
 	}
-	if _, err := db.Exec(
-		`create table
-			questions(
-				id integer primary key
-				, title varchar(40)
-				, username varchar(40)
-				, content varchar(254)
-			)`); err != nil {
+	question.CreateTable(db)
+	err = question.Init("Haskellをやる", "Daiki", "ところでHaskellってなんですか?").Insert(db)
+	if err != nil {
 		panic(err)
 	}
-
-	questions := []*question.Question{
-		question.Init("Haskellをやる", "Daiki", "ところでHaskellってなんですか?"),
-		question.Init("Clojureをやる", "Daiki", "ところでClojureってなんですか?"),
-	}
-	for _, q := range questions {
-		_, err := db.Exec("insert into questions(title, username, content) values(?, ?, ?)", q.Title, q.Username, q.Content)
-		if err != nil {
-			panic(err)
-		}
+	err = question.Init("Clojureをやる", "Daiki", "ところでClojureってなんですか?").Insert(db)
+	if err != nil {
+		panic(err)
 	}
 	return db
 }
