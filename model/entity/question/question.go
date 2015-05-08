@@ -42,11 +42,35 @@ func (q *Question) Insert(db entity.DB) error {
 	return meddler.Insert(db, "question", q)
 }
 
+func Delete(db entity.DB, id int) error {
+	result, err := db.Exec("DELETE FROM question WHERE id = ?", id)
+	if err != nil {
+		return err
+	}
+	af, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if af != 1 {
+		return errors.New("failed to delete")
+	}
+	return nil
+}
+
 func SelectAll(db entity.DB) []*Question {
 	var ques []*Question
-	err := meddler.QueryAll(db, &ques, "select * from question")
+	err := meddler.QueryAll(db, &ques, "SELECT * FROM question")
 	if err != nil {
 		panic(err)
 	}
 	return ques
+}
+
+func SelectById(db entity.DB, id int) *Question {
+	que := new(Question)
+	err := meddler.QueryRow(db, que, "SELECT * FROM question WHERE id = ?", id)
+	if err != nil {
+		panic(err)
+	}
+	return que
 }
