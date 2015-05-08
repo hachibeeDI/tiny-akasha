@@ -1,6 +1,8 @@
 package question
 
 import (
+	"errors"
+
 	"github.com/russross/meddler"
 
 	"github.com/hachibeeDI/tiny-akasha/model/entity"
@@ -13,9 +15,15 @@ type Question struct {
 	Content  string `meddler:"content" json:"content"`
 }
 
-func CreateTable(db entity.DB) {
+func DisposeTable(db entity.DB) {
+	if _, err := db.Exec("drop table if exists question"); err != nil {
+		panic(err)
+	}
+}
+
+func CreateTableIfNotExists(db entity.DB) {
 	if _, err := db.Exec(
-		`create table
+		`CREATE TABLE IF NOT EXISTS
 			question(
 				id integer primary key
 				, title varchar(40)

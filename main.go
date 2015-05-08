@@ -22,18 +22,8 @@ func PrePareDB() *sql.DB {
 		panic(err)
 	}
 
-	if _, err := db.Exec("drop table if exists question"); err != nil {
-		panic(err)
-	}
-	question.CreateTable(db)
-	err = question.Init("Haskellをやる", "Daiki", "ところでHaskellってなんですか?").Insert(db)
-	if err != nil {
-		panic(err)
-	}
-	err = question.Init("Clojureをやる", "Daiki", "ところでClojureってなんですか?").Insert(db)
-	if err != nil {
-		panic(err)
-	}
+	// question.DisposeTable(db)
+	question.CreateTableIfNotExists(db)
 	return db
 }
 
