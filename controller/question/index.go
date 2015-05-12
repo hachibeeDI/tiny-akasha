@@ -2,6 +2,7 @@ package question
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	// "golang.org/x/net/context"
@@ -9,6 +10,9 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("index called")
-	fmt.Fprintf(w, "create faq success !")
+	content, err := ioutil.ReadFile("./template/index.html")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Fprintf(w, string(content[:]))
 }

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/zenazn/goji"
 
@@ -17,9 +18,11 @@ func InitRoute() {
 
 	goji.Get("/", question.Index)
 
+	staticFs := http.FileServer(http.Dir("./template/static"))
+	goji.Get("/static/*", http.StripPrefix("/static", staticFs))
+
 	goji.Post(v1API("/question"), question.Create)
 	goji.Get(v1API("/question"), question.Get)
-	// goji.Get(v1API("/question/show"), question.Get)
 	goji.Get(v1API("/question/id/:id"), question.GetById)
 	goji.Delete(v1API("/question/id/:id"), question.Delete)
 	// goji.Get(v1API("/question/user/:username"), nil)
