@@ -1,3 +1,7 @@
+temp/
+dist/
+
+
 # Created by https://www.gitignore.io
 
 ### Node ###
