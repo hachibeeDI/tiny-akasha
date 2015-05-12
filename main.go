@@ -2,9 +2,14 @@ package main
 
 import (
 	"database/sql"
+	"flag"
+	"fmt"
+	"os"
+	"strings"
 
 	// "html/template"
 
+	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/zenazn/goji"
@@ -16,8 +21,26 @@ import (
 	"github.com/hachibeeDI/tiny-akasha/model/entity/question"
 )
 
+func makeConnectionString() string {
+	flag.Parse()
+	host := "localhost"
+	port := "3306"
+	user := os.Args[1]
+	pass := os.Args[1]
+	dbname := "auction"
+	protocol := "tcp"
+	dbargs := " "
+
+	if strings.Trim(dbargs, " ") != "" {
+		dbargs = "?" + dbargs
+	} else {
+		dbargs = ""
+	}
+	return fmt.Sprintf("%s:%s@%s([%s]:%s)/%s%s", user, pass, protocol, host, port, dbname, dbargs)
+}
+
 func PrePareDB() *sql.DB {
-	db, err := sql.Open("sqlite3", "./test.db")
+	db, err := sql.Open("mysql", makeConnectionString())
 	if err != nil {
 		panic(err)
 	}
