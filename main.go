@@ -5,9 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strings"
-
-	// "html/template"
 
 	_ "github.com/go-sql-driver/mysql"
 
@@ -20,26 +17,29 @@ import (
 	"github.com/hachibeeDI/tiny-akasha/model/entity/question"
 )
 
-func makeConnectionString() string {
+func makeConnectionString(dbname string) string {
 	flag.Parse()
 	host := "localhost"
 	port := "3306"
 	user := os.Args[1]
-	pass := os.Args[1]
-	dbname := "auction"
+	pass := os.Args[2]
 	protocol := "tcp"
-	dbargs := " "
-
-	if strings.Trim(dbargs, " ") != "" {
-		dbargs = "?" + dbargs
-	} else {
-		dbargs = ""
-	}
-	return fmt.Sprintf("%s:%s@%s([%s]:%s)/%s%s", user, pass, protocol, host, port, dbname, dbargs)
+	return fmt.Sprintf("%s:%s@%s([%s]:%s)/%s", user, pass, protocol, host, port, dbname)
 }
 
 func PrePareDB() *sql.DB {
-	db, err := sql.Open("mysql", makeConnectionString())
+	connst := makeConnectionString("")
+	fmt.Println(connst)
+	mysql, err := sql.Open("mysql", connst)
+	if err != nil {
+		panic(err)
+	}
+	mysql.Exec(`CREATE DATABASE IF NOT EXISTS akasha DEFAULT CHARACTER SET utf8; `)
+	mysql.Close()
+
+	conToDb := makeConnectionString("akasha")
+	fmt.Println(conToDb)
+	db, err := sql.Open("mysql", conToDb)
 	if err != nil {
 		panic(err)
 	}
