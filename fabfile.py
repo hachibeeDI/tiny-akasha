@@ -25,6 +25,7 @@ def deploy():
     prepare()
     build()
     put('./main', '~/var/http/tiny-akasha/')
+    put('./template/index.html', '~/var/http/tiny-akasha/template/index.html')
     put('./template/static/dist/', '~/var/http/tiny-akasha/template/static/')
 
 
