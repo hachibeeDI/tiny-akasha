@@ -7,6 +7,7 @@ import (
 	"github.com/zenazn/goji"
 
 	"github.com/hachibeeDI/tiny-akasha/controller/question"
+	"github.com/hachibeeDI/tiny-akasha/helper"
 )
 
 func v1API(uri string) string {
@@ -18,7 +19,7 @@ func InitRoute() {
 
 	goji.Get("/", question.Index)
 
-	staticFs := http.FileServer(http.Dir("./template/static"))
+	staticFs := http.FileServer(http.Dir(helper.DirName + "/template/static"))
 	goji.Get("/static/*", http.StripPrefix("/static", staticFs))
 
 	goji.Post(v1API("/question"), question.Create)
@@ -27,7 +28,6 @@ func InitRoute() {
 	goji.Delete(v1API("/question/id/:id"), question.Delete)
 	// goji.Get(v1API("/question/user/:username"), nil)
 
-	// http.Handle("/static/*", http.FileServer(http.Dir("/template/static/")))
 	// goji.Post(v1API("/question/answer"), question.Ansewer)
 	// goji.Get(v1API("/question/answer"), question.Get)
 }
