@@ -16,7 +16,7 @@ def prepare():
 
 
 def build():
-    local('go build main.go')
+    local('GOOS=linux GOARCH=amd64 go build main.go')
     with lcd('./template/static/'):
         local('gulp build')
 
