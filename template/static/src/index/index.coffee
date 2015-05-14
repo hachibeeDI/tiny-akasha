@@ -34,7 +34,7 @@ class IndexContext extends Arda.Context
       @update((s) => questions: questions)
 
     subscribe 'question:show', (id) =>
-      Router.pushContext(require('../each-question/context'), {id: id})
+      Routers.main.pushContext(require('../each-question/context'), {id: id})
 
   initState: (props) ->
     return {questions: [], }

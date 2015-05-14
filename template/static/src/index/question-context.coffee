@@ -13,7 +13,7 @@ QuestionComponent = React.createClass(
   mixins: [Arda.mixin]
   showQuestion: () ->
     EachQuestionContext = require '../each-question/context'
-    Router.pushContext(EachQuestionContext, {id: @props.id})
+    Routers.main.pushContext(EachQuestionContext, {id: @props.id})
 
   render: () ->
     console.log 'question!', @props
