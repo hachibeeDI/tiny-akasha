@@ -27,6 +27,8 @@ def deploy():
     put('./main', '~/var/http/tiny-akasha/')
     put('./template/index.html', '~/var/http/tiny-akasha/template/index.html')
     put('./template/static/dist/', '~/var/http/tiny-akasha/template/static/')
+    put('./template/static/node_modules/react/dist/react-with-addons.js', '~/var/http/tiny-akasha/template/static/dist/')
+    put('./template/static/node_modules/react/dist/react-with-addons.min.js', '~/var/http/tiny-akasha/template/static/dist/')
 
 
 def clean():
