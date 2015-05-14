@@ -6,6 +6,10 @@ window._ = require 'lodash'
 
 
 document.addEventListener 'DOMContentLoaded', () ->
-  IndexContext = require './index/index'
+  window.PostRouter = new Arda.Router(Arda.DefaultLayout, document.getElementById('app-post-question'))
+  PostContext = require './post-question/index'
+  PostRouter.pushContext(PostContext, {})
+
   window.Router = new Arda.Router(Arda.DefaultLayout, document.getElementById('app-main'))
+  IndexContext = require './index/index'
   Router.pushContext(IndexContext, {})
