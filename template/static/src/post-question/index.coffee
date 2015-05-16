@@ -23,7 +23,7 @@ class PostPanelContext extends Arda.Context
       Routers.post.popContext()
 
     render: () ->
-      $c('div', {className: 'post__panel', }, [
+      post__panel = $c('div', {className: 'post__panel', }, [
         $c('button', {onClick: @close, className: "icon-font close__button"}, ''),
         $c('form', {onSubmit: @postQuestion}, [
             $c('label', {className: 'label--row'},
@@ -36,6 +36,10 @@ class PostPanelContext extends Arda.Context
           ]
         )]
       )
+      return $('div', {
+        className: 'post__panel--dark__cover'
+        onClick: @close
+      }, post__panel)
   )
 
   initState: (props) ->
