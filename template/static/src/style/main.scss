@@ -2,6 +2,10 @@
 
 @import './font';
 
+.close__button {
+  @extend .octicon-x;
+}
+
 .label--row {
   display: block;
 }

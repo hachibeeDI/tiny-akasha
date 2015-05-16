@@ -24,7 +24,7 @@ class PostPanelContext extends Arda.Context
 
     render: () ->
       $c('div', {className: 'post__panel', }, [
-        $c('button', {onClick: @close}, 'x'),
+        $c('button', {onClick: @close, className: "icon-font close__button"}, ''),
         $c('form', {onSubmit: @postQuestion}, [
             $c('label', {className: 'label--row'},
                 ['タイトル', $c('input', {type: 'text', name: 'title', valueLink: @linkState('title')})]),
@@ -54,7 +54,10 @@ PostFrontComponent = React.createClass(
     Routers.post.pushContext(PostPanelContext, {})
 
   render: () ->
-    $c('button', {onClick: @showPanel}, '投')
+    $c('button', {
+        onClick: @showPanel,
+        className: 'icon-font octicon-pencil'
+      }, '')
 )
 
 
