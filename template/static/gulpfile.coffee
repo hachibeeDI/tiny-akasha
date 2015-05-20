@@ -4,11 +4,19 @@ coffee  = require 'gulp-coffee'
 uglify = require('gulp-uglify')
 # sass    = require 'gulp-sass'
 plumber = require 'gulp-plumber'
+changed  = require 'gulp-changed'
 
 gulp.task 'default', ['build']
 gulp.task 'build', [
   'build:bundle'
 ]
+
+gulp.task 'dest:assets',  ->
+  SRC = './node_modules/octicons/octicons/*'
+  DEST = './dist/font/octicons/'
+  gulp.src(SRC)
+    .pipe changed(DEST)
+    .pipe(gulp.dest(DEST))
 
 gulp.task 'build:coffee', ->
   gulp.src('src/**/*.coffee')
@@ -43,7 +51,7 @@ gulp.task 'compress:js', ['build:coffee', 'build:bundle'], ->
 # source = require 'vinyl-source-stream'
 webpack = require('gulp-webpack')
 
-gulp.task 'build:bundle', ['build:coffee', 'build:jade', 'build:css'], shell.task [
+gulp.task 'build:bundle', ['dest:assets', 'build:coffee', 'build:jade', 'build:css'], shell.task [
   'webpack'
 ]
 
