@@ -1,6 +1,7 @@
 .post__panel--dark__cover {
   position: fixed;
   z-index: 5000000;
+  top: 0;
   min-width: 100%;
   width: auto;
   min-height: 100%;
@@ -9,13 +10,23 @@
 }
 
 .post__panel {
-  position: fixed;
+  position: absolute;
+  background-color: #FEFEFE;
+  border-radius: 3px;
+  border-right: 2px #E0E0E0 solid;
+  border-bottom: 2px #E0E0E0 solid;
   z-index: 5000001;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   margin: auto;
-  // width: 任意の値
-  // height: 任意の値
+  width: 500px;
+  height: 400px;
+  padding: 5px 30px 10px;
 }
+
+.post__panel__form {
+  margin-top: 3px;
+}
+

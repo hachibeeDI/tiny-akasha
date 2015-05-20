@@ -6,6 +6,7 @@
 
 .close__button {
   @extend .octicon-x;
+  border: none;
 }
 
 
@@ -13,4 +14,9 @@
 
 .label--row {
   display: block;
+  margin: 10px;
+  span {  // FIXME:
+    display: inline-block;
+    width: 80px;
+  }
 }
