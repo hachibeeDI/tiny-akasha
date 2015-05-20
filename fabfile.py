@@ -16,7 +16,7 @@ def prepare():
 
 
 def build_server():
-    local('GOOS=linux GOARCH=amd64 go build main.go')
+    local('GOOS=linux GOARCH=amd64 gom exec go build main.go')
 
 
 def build_assets():
