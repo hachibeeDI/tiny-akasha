@@ -25,7 +25,7 @@ class PostPanelContext extends Arda.Context
     render: () ->
       post__panel = $c('div', {className: 'post__panel', }, [
         $c('button', {onClick: @close, className: "icon-font close__button"}, ''),
-        $c('form', {onSubmit: @postQuestion}, [
+        $c('form', {className: 'post__panel__form', onSubmit: @postQuestion}, [
             $c('label', {className: 'label--row'},
                 ['タイトル', $c('input', {type: 'text', name: 'title', valueLink: @linkState('title')})]),
             $c('label', {className: 'label--row'},
@@ -36,7 +36,7 @@ class PostPanelContext extends Arda.Context
           ]
         )]
       )
-      return $('div', {
+      return $c('div', {
         className: 'post__panel--dark__cover'
         onClick: @close
       }, post__panel)
