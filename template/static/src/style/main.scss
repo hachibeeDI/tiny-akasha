@@ -10,6 +10,59 @@
 }
 
 
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+html {
+  font-family: 'Helvetica Neue', 'Arial', 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', Meiryo, sans-serif;
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.5rem;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+}
+
+
+
+@mixin center-width-baranser() {
+  margin: auto;
+  max-width: 2028px;
+  width: 70%;
+  min-width: 1024;
+}
+
+
+.header {
+  width: 100%;
+  height: auto;
+  background-color: #275694;
+  color: #FFF;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.header__inner {
+  @include center-width-baranser();
+}
+
+
+.main {
+  @include center-width-baranser();
+}
+
+
 @import './post-panel';
 
 .label--row {
