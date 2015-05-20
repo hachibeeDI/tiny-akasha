@@ -1,4 +1,5 @@
 div.question
+  button.question__back-button(onClick=goBack)= '戻る'
   h2.question-title= props.title
   p.posted-user= props.username
   p.content= props.content

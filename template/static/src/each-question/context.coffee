@@ -2,6 +2,9 @@
 EachQuestionComponent = React.createClass(
   mixins: [Arda.mixin]
 
+  goBack: (ev) ->
+    Routers.main.popContext()
+
   render: () ->
     console.log 'each question component render', @props
     template = require('./view')
