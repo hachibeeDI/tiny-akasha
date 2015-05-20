@@ -7,7 +7,6 @@ from fabric.api import run, sudo, cd, env, hide, settings, put
 env.use_ssh_config = True
 
 # env.hosts = [TEST_SERVER]
-env.key_filename = ['~/.ssh/github/id_rsa.github.org']
 
 
 def prepare():
