@@ -38,7 +38,6 @@ class PostPanelContext extends Arda.Context
       )
       return $c('div', {
         className: 'post__panel--dark__cover'
-        onClick: @close
       }, post__panel)
   )
 
@@ -54,14 +53,28 @@ class PostPanelContext extends Arda.Context
 ###
 PostFrontComponent = React.createClass(
   mixins: [Arda.mixin, React.addons.LinkedStateMixin]
+  getInitialState: () ->
+    return searchWord: ''
+
   showPostPanel: () ->
     Routers.post.pushContext(PostPanelContext, {})
 
+  seachQuestionsByWord: (ev) ->
+    return unless ev.keyCode == 13
+    $.post('/api/v1/question/search', {'word': @state.searchWord})
+     .done (data) =>
+       console.log '/api/v1/question/search', data
+       unless data.error?
+         @dispatch 'search:questions', data['questions']
+
   render: () ->
-    $c('button', {
+    $c('nav', {className: 'controll-panel'}, [
+      $c('button', {
         onClick: @showPostPanel,
         className: 'icon-font octicon-pencil button__open-post'
-      }, '')
+      }),
+      $c('input', {className: 'search-box', type: 'text', onKeyDown: @seachQuestionsByWord, valueLink: @linkState('searchWord')}),
+    ])
 )
 
 
