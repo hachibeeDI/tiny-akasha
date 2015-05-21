@@ -73,7 +73,14 @@ PostFrontComponent = React.createClass(
         onClick: @showPostPanel,
         className: 'icon-font octicon-pencil button__open-post'
       }),
-      $c('input', {className: 'search-box', type: 'text', onKeyDown: @seachQuestionsByWord, valueLink: @linkState('searchWord')}),
+      $c('input', {
+        className: 'search-box',
+        type: 'text',
+        placeholder: 'search',
+        onKeyDown: @seachQuestionsByWord,
+        valueLink: @linkState('searchWord'),
+      }
+      ),
     ])
 )
 

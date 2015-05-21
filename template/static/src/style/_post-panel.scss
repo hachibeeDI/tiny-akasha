@@ -1,4 +1,11 @@
+@import './_size-definitions.scss';
+
 $black: #454545;
+
+.controll-panel {
+  @include center-width-baranser();
+  margin: auto;
+}
 
 .button__open-post {
   width: 40px;
@@ -13,6 +20,9 @@ $black: #454545;
   color: $black;
   border: none;
   margin: auto 30px;
+  line-height: 2.5rem;
+  text-indent: 5px;
+  border-radius: 2px;
 }
 
 .post__panel--dark__cover {

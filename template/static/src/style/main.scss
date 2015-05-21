@@ -2,6 +2,8 @@
 
 @import '../../node_modules/normalize.scss/normalize.scss';
 
+@import './_size-definitions.scss';
+
 @import './font';
 
 .close__button {
@@ -34,14 +36,6 @@ li {
   margin: 10px 0;
 }
 
-
-
-@mixin center-width-baranser() {
-  margin: auto;
-  max-width: 2028px;
-  width: 70%;
-  min-width: 1024;
-}
 
 
 .header {
