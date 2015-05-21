@@ -29,6 +29,7 @@ func CreateTableIfNotExists(db entity.DB) {
 				, title varchar(40)
 				, username varchar(40)
 				, content varchar(254)
+				, FULLTEXT INDEX(title, content)
 			) Engine=Mroonga DEFAULT CHARSET=utf8;`); err != nil {
 		panic(err)
 	}
