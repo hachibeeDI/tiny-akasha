@@ -54,13 +54,13 @@ class PostPanelContext extends Arda.Context
 ###
 PostFrontComponent = React.createClass(
   mixins: [Arda.mixin, React.addons.LinkedStateMixin]
-  showPanel: () ->
+  showPostPanel: () ->
     Routers.post.pushContext(PostPanelContext, {})
 
   render: () ->
     $c('button', {
-        onClick: @showPanel,
-        className: 'icon-font octicon-pencil'
+        onClick: @showPostPanel,
+        className: 'icon-font octicon-pencil button__open-post'
       }, '')
 )
 
