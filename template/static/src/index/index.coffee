@@ -11,7 +11,7 @@ IndexComponent = React.createClass(
   render: () ->
     console.log 'index component'
     $c('div', {},
-      $c('ul', {},
+      $c('ul', {className: 'questions__ul'},
         @props.questions.map (q) ->
           q['key'] = q['id']
           $c(QuestionComponent, q)

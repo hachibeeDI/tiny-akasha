@@ -9,16 +9,20 @@ props:
   username: string
   content: string
 ###
-QuestionComponent = React.createClass(
+QuestionComponent = React.createClass
   mixins: [Arda.mixin]
   showQuestion: () ->
     EachQuestionContext = require '../each-question/context'
     Routers.main.pushContext(EachQuestionContext, {id: @props.id})
 
   render: () ->
-    console.log 'question!', @props
-    $c('li', {key: @props.id, onClick: @showQuestion}, @props.title)
-)
+    $c('li', {className: 'question', key: @props.id, onClick: @showQuestion},
+      $c('div', {className: 'question__inner'}, [
+        $c('h3', {className: 'question__title'}, @props.title),
+        $c('p', {className: 'question__digest'}, @props.content),
+      ])
+    )
+
 
 
 module.exports = QuestionComponent

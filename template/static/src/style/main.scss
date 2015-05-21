@@ -43,3 +43,30 @@
     width: 80px;
   }
 }
+
+
+.questions {
+}
+
+.question {
+  padding: 20px 0;
+  min-width: 200px;
+  border: 1px #eee solid;
+  margin: 15px 0;
+
+  &__inner {
+    width: 90%;
+    margin: auto auto auto 15px;
+    overflow: hidden;
+  }
+
+  &__title {
+    font-weight: bold;
+  }
+  &__digest {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
