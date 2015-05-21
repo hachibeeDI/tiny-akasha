@@ -46,17 +46,15 @@ def deploy_assets():
 def deploy():
     prepare()
     deploy_assets()
-    stop()
     deploy_server()
-    start()
 
 
 def stop():
-    run('supervisorctl stop')
+    sudo('supervisorctl stop akasha')
 
 
 def start():
-    run('supervisorctl start')
+    sudo('supervisorctl start akasha')
 
 
 def clean():
