@@ -2,6 +2,7 @@
 
 from fabric.api import lcd, local
 from fabric.api import run, sudo, cd, env, hide, settings, put
+from fabric.contrib.files import exists
 
 
 env.use_ssh_config = True
@@ -12,6 +13,7 @@ env.use_ssh_config = True
 def prepare():
     with cd('~/var/http'):
         run('mkdir -p tiny-akasha/template/static/')
+    put('./env/supervisord/goji.conf', '/etc/supervisor/conf.d/', use_sudo=True)
 
 
 def build_server():
