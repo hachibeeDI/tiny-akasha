@@ -6,13 +6,7 @@ QuestionComponent = require './question-context'
 
 IndexComponent = React.createClass(
   mixins: [Arda.mixin]
-  componentWillMount: () ->
-    $.get('/api/v1/question')
-      .then((data) =>
-        console.log data
-        unless data.error?
-          @dispatch 'show:questions', data['questions']
-      )
+  # componentWillMount: () ->
 
   render: () ->
     console.log 'index component'
@@ -37,7 +31,7 @@ class IndexContext extends Arda.Context
       Routers.main.pushContext(require('../each-question/context'), {id: id})
 
   initState: (props) ->
-    return {questions: [], }
+    return {questions: props['questions'] or [], }
 
   expandComponentProps: (props, state) ->
     return {questions: state['questions']}
