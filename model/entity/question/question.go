@@ -75,3 +75,14 @@ func SelectById(db entity.DB, id int) *Question {
 	}
 	return que
 }
+
+// SEEALSO: http://redmine.groonga.org/projects/mroonga/wiki/Mroonga_full_text_Search_in_Boolean_mode_%28jp%29_
+func SelectByWord(db entity.DB, word string) []*Question {
+	var ques []*Question
+	mroongaPredicate := "*DOR " + word
+	err := meddler.QueryAll(db, &ques, "SELECT * FROM question WHERE MATCH(title, content) AGAINST(?)", mroongaPredicate)
+	if err != nil {
+		panic(err)
+	}
+	return ques
+}

@@ -26,7 +26,8 @@ func InitRoute() {
 	goji.Get(v1API("/question"), question.Get)
 	goji.Get(v1API("/question/id/:id"), question.GetById)
 	goji.Delete(v1API("/question/id/:id"), question.Delete)
-	// goji.Get(v1API("/question/user/:username"), nil)
+
+	goji.Post(v1API("/question/search"), question.QueryByWords)
 
 	// goji.Post(v1API("/question/answer"), question.Ansewer)
 	// goji.Get(v1API("/question/answer"), question.Get)
