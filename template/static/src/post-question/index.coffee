@@ -66,6 +66,12 @@ PostFrontComponent = React.createClass(
 
 
 class PostContext extends Arda.Context
+  delegate: (subscribe) ->
+    super
+    subscribe 'search:questions', (questions) =>
+      IndexContext = require '../index/index'
+      Routers.main.pushContext(IndexContext, {questions: questions})
+
   component: PostFrontComponent
 
   initState: (props) ->

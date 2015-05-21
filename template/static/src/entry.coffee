@@ -13,4 +13,9 @@ document.addEventListener 'DOMContentLoaded', () ->
 
   Routers.main = new Arda.Router(Arda.DefaultLayout, document.getElementById('app-main'))
   IndexContext = require './index/index'
-  Routers.main.pushContext(IndexContext, {})
+  $.get('/api/v1/question')
+    .then((data) =>
+      console.log 'start applications!', data
+      unless data.error?
+        Routers.main.pushContext(IndexContext, data)
+    )
