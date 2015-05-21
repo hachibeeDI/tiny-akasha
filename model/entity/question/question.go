@@ -25,7 +25,7 @@ func CreateTableIfNotExists(db entity.DB) {
 	if _, err := db.Exec(
 		`CREATE TABLE IF NOT EXISTS
 			question(
-				id integer primary key
+				id integer AUTO_INCREMENT primary key
 				, title varchar(40)
 				, username varchar(40)
 				, content varchar(254)
