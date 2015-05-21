@@ -43,11 +43,20 @@ def deploy_assets():
     put('./template/static/node_modules/react/dist/react-with-addons.min.js', '~/var/http/tiny-akasha/template/static/dist/')
 
 
-
 def deploy():
     prepare()
-    deploy_server()
     deploy_assets()
+    stop()
+    deploy_server()
+    start()
+
+
+def stop():
+    run('supervisorctl stop')
+
+
+def start():
+    run('supervisorctl start')
 
 
 def clean():
