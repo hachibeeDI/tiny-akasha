@@ -1,41 +1,17 @@
 @charset "utf-8";
 
 @import '../../node_modules/normalize.scss/normalize.scss';
+@import './_commons.scss';
 
 @import './_size-definitions.scss';
 
 @import './font';
 
+
 .close__button {
   @extend .octicon-x;
   border: none;
 }
-
-
-html, body {
-  width: 100%;
-  height: 100%;
-}
-
-html {
-  font-family: 'Helvetica Neue', 'Arial', 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', Meiryo, sans-serif;
-  font-size: 62.5%;
-}
-
-body {
-  font-size: 1.5rem;
-}
-
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-li {
-  margin: 10px 0;
-}
-
 
 
 .header {
