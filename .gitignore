@@ -62,4 +62,7 @@ Session.vim
 .netrwhist
 *~
 
+### add by me
 *.pyc
+_vendor/
+
