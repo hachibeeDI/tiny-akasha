@@ -14,6 +14,7 @@ import (
 	// "github.com/hachibeeDI/tiny-akasha/view"
 	"github.com/hachibeeDI/tiny-akasha/controller"
 	"github.com/hachibeeDI/tiny-akasha/model/entity"
+	"github.com/hachibeeDI/tiny-akasha/model/entity/answer"
 	"github.com/hachibeeDI/tiny-akasha/model/entity/question"
 )
 
@@ -46,6 +47,7 @@ func PrePareDB() *sql.DB {
 
 	// question.DisposeTable(db)
 	question.CreateTableIfNotExists(db)
+	answer.CreateTableIfNotExists(db)
 	return db
 }
 
