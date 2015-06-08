@@ -12,9 +12,7 @@ $static-dir-prefix: '/static/dist/font/octicons/';
   font-style: normal;
 }
 
-// .octicon is optimized for 16px.
-// .mega-octicon is optimized for 32px but can be used larger.
-.octicon, .mega-octicon {
+@mixin icon-font {
   font: normal normal normal 16px/1 octicons;
   display: inline-block;
   text-decoration: none;
@@ -26,10 +24,14 @@ $static-dir-prefix: '/static/dist/font/octicons/';
   -ms-user-select: none;
   user-select: none;
 }
+
+// .octicon is optimized for 16px.
+// .mega-octicon is optimized for 32px but can be used larger.
+.octicon, .mega-octicon {
+  @include icon-font();
+}
 .mega-octicon { font-size: 32px; }
 
-
-.icon-font { @extend .octicon; }
 
 
 .octicon-alert:before { content: '\f02d'} /*  */

@@ -1,9 +1,9 @@
 div.question
   button.question__back-button(onClick=goBack)= '戻る'
-  h2.question-title= props.title
-  p.posted-user= props.username
-  p.content= props.content
-  h3.answers-title= '回答'
+  h2.question__title= props.title
+  p.question__posted-user= props.username
+  p.question__content= props.content
+  h3.answers-section__header= '回答'
   ul.answers
     each ans in props.answers
       li.answer(key=ans.id)
