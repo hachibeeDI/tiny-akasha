@@ -3,3 +3,9 @@ div.question
   h2.question-title= props.title
   p.posted-user= props.username
   p.content= props.content
+  h3.answers-title= '回答'
+  ul.answers
+    each ans in props.answers
+      li.answer(key=ans.id)
+        h4.answer-user= ans.username
+        p.answer-content= ans.content

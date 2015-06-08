@@ -1,7 +1,7 @@
 
 $c = React.createElement.bind(React)
 
-QuestionComponent = require './question-context'
+QuestionContext = require './question-context'
 
 
 IndexComponent = React.createClass(
@@ -14,7 +14,7 @@ IndexComponent = React.createClass(
       $c('ul', {className: 'questions__ul'},
         @props.questions.map (q) ->
           q['key'] = q['id']
-          $c(QuestionComponent, q)
+          $c(QuestionContext, q)
       ),
     )
 )
@@ -28,7 +28,18 @@ class IndexContext extends Arda.Context
       @update((s) => questions: questions)
 
     subscribe 'question:show', (id) =>
-      Routers.main.pushContext(require('../each-question/context'), {id: id})
+      Promise.all([
+        $.get("/api/v1/question/id/#{id}"),
+        $.get("/api/v1/question/id/#{id}/answer"),
+      ])
+        .then (data) =>
+          console.log 'question:show occurd', data
+          Routers.main.pushContext(
+            require('../each-question/context'),
+            _.merge(data[0], data[1])
+          )
+        .catch (error) ->
+          console.error 'each question', error
 
   initState: (props) ->
     return {questions: props['questions'] or [], }

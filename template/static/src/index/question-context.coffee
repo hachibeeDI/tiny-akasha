@@ -12,8 +12,7 @@ props:
 QuestionComponent = React.createClass
   mixins: [Arda.mixin]
   showQuestion: () ->
-    EachQuestionContext = require '../each-question/context'
-    Routers.main.pushContext(EachQuestionContext, {id: @props.id})
+    @dispatch 'question:show', @props.id
 
   render: () ->
     $c('li', {className: 'question', key: @props.id, onClick: @showQuestion},

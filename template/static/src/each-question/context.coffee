@@ -15,27 +15,23 @@ EachQuestionComponent = React.createClass(
 ###
 props:
   id: number
+  title: string
+  username: string
+  content: string
 ###
 class EachQuestionContext extends Arda.Context
   component: EachQuestionComponent
-  initState: (props) ->
-    console.log 'each question init'
-    return {question: [], }
+  # initState: (props) ->
+  #   console.log 'each question init'
+  #   return {question: [], }
 
   delegate: (subscribe) ->
     super
-    subscribe 'context:created', =>
-      $.get("/api/v1/question/id/#{@props.id}")
-        .then((data) =>
-          console.log 'each question context created', data
-          @update((s) =>
-            question: data
-          )
-        )
+
 
   expandComponentProps: (props, state) ->
     console.log 'each question expand', props, state
-    return state['question']
+    return props
 
 
 module.exports = EachQuestionContext
