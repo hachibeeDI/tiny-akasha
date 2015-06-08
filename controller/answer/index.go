@@ -80,7 +80,8 @@ func GetByQuestionId(c web.C, w http.ResponseWriter, r *http.Request) {
 		helper.RenderJson(map[string]interface{}{"error": "id type should be int"}, w)
 		return
 	}
-	helper.RenderJson(answer.SelectByQuestionId(entity.Db, id), w)
+	answers := map[string]interface{}{"answers": answer.SelectByQuestionId(entity.Db, id)}
+	helper.RenderJson(answers, w)
 }
 
 func GetById(c web.C, w http.ResponseWriter, r *http.Request) {

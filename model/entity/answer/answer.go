@@ -102,11 +102,14 @@ func SelectById(db entity.DB, id int) *Answer {
 	return ans
 }
 
-func SelectByQuestionId(db entity.DB, question_id int) *Answer {
-	ans := new(Answer)
-	err := meddler.QueryRow(db, ans, "SELECT * FROM answer WHERE question_id = ?", question_id)
+func SelectByQuestionId(db entity.DB, question_id int) []*Answer {
+	var anss []*Answer
+	err := meddler.QueryAll(db, &anss, "SELECT * FROM answer WHERE question_id = ?", question_id)
 	if err != nil {
 		panic(err)
 	}
-	return ans
+	if anss == nil {
+		return []*Answer{}
+	}
+	return anss
 }
