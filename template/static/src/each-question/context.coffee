@@ -43,6 +43,14 @@ class EachQuestionContext extends Arda.Context
 
   delegate: (subscribe) ->
     super
+    subscribe 'answer:delete', (id) =>
+      request
+        .del "/api/v1/answer/id/#{id}"
+        .end (err, res) =>
+          return console.error err if err?
+          console.log res
+          actions = require '../index/actions'
+          actions.showQuestion(@props.id)
 
 
   expandComponentProps: (props, state) ->
