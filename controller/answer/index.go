@@ -1,7 +1,9 @@
 package answer
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 
@@ -12,20 +14,31 @@ import (
 	"github.com/hachibeeDI/tiny-akasha/view/helper"
 )
 
+type NewAnswerBody struct {
+	Name    string `json:name`
+	Content string `json:content`
+}
+
 // url_params:
 //    questionId
 // params:
 //    question_id, name, content
 func Create(c web.C, w http.ResponseWriter, r *http.Request) {
 	s_question_id := c.URLParams["questionId"]
-	name := r.FormValue("name")
-	content := r.FormValue("content")
+	// TODO: Content-Typeがapplication/jsonじゃない時の分岐も必要
+	body, _ := ioutil.ReadAll(r.Body)
+	fmt.Println(string(body))
+	var posted NewAnswerBody
+	json.Unmarshal(body, &posted)
+	fmt.Println(posted)
+	name := posted.Name
+	content := posted.Content
 	question_id, err := strconv.Atoi(s_question_id)
 	if err != nil {
 		helper.RenderJson(map[string]interface{}{"error": "question_id type should be int"}, w)
 		return
 	}
-	if len(name) < 0 || len(content) < 0 {
+	if name == "" || content == "" {
 		helper.RenderJson(map[string]interface{}{"error": "empty data"}, w)
 		return
 	}
