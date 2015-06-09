@@ -24,14 +24,6 @@ gulp.task 'build:coffee', ->
     .pipe(gulp.dest('temp'))
 
 
-jade    = require 'gulp-react-jade'
-
-gulp.task 'build:jade', ->
-  gulp.src('src/**/*.jade')
-    .pipe plumber()
-    .pipe jade(globalReact: true)
-    .pipe(gulp.dest('temp'))
-
 
 sass = require('gulp-sass')
 
@@ -51,7 +43,7 @@ gulp.task 'compress:js', ['build:coffee', 'build:bundle'], ->
 # source = require 'vinyl-source-stream'
 webpack = require('gulp-webpack')
 
-gulp.task 'build:bundle', ['dest:assets', 'build:coffee', 'build:jade', 'build:css'], shell.task [
+gulp.task 'build:bundle', ['dest:assets', 'build:coffee', 'build:css'], shell.task [
   'webpack'
 ]
 
