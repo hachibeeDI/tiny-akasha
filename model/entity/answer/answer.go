@@ -41,6 +41,9 @@ func Init(questionID int, username, content string) *Answer {
 }
 
 func (q *Answer) Insert(db entity.DB) error {
+	if q.Username == "" || q.Content == "" {
+		return errors.New("answer's name or content is empty. so create answer is failed.")
+	}
 	return meddler.Insert(db, "answer", q)
 }
 
