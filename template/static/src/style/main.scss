@@ -100,3 +100,11 @@
   
 }
 
+.answer-form {
+  &__name {
+    display: block;
+  }
+  &__content {
+    display: block;
+  }
+}

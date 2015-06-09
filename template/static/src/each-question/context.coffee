@@ -1,9 +1,24 @@
+request = require 'superagent'
 
 EachQuestionComponent = React.createClass(
   mixins: [Arda.mixin]
 
   goBack: (ev) ->
     Routers.main.popContext()
+
+  onHandleAnswerFormSubmit: (ev) ->
+    ev.preventDefault()
+    form = ev.target
+    username = form.elements['user'].value
+    content = form.elements['content'].value
+    return if username == '' || content == ''
+    request
+      .post "/api/v1/question/id/#{@props.id}/answer"
+      .send name: username, content: content
+      .set 'Accept', 'application/json'
+      .end (err, res) =>
+        console.log 'question created'
+        @dispatch 'question:show', @props.id
 
   render: () ->
     console.log 'each question component render', @props
@@ -18,6 +33,7 @@ props:
   title: string
   username: string
   content: string
+  answers: Array{string}
 ###
 class EachQuestionContext extends Arda.Context
   component: EachQuestionComponent
