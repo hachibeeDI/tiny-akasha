@@ -33,17 +33,19 @@ func InitRoute() {
 	// 解答一覧
 	goji.Post(v1API("/question/id/:questionId/answer"), answer.Create)
 	goji.Get(v1API("/question/id/:questionId/answer"), answer.GetByQuestionId)
+	goji.Delete(v1API("/question/id/:questionId/answer"), answer.DeleteByQuestionID) // 特権つけないと危険かも
+
 	goji.Post(v1API("/question/id/:questionId/answer/:answerId"), answer.Update)
-	goji.Delete(v1API("/question/id/:questionId/answer/:answerId"), answer.DeleteByQuestionID) // 特権つけないと危険かも
 
 	// 質問に紐付いた操作
 	goji.Get(v1API("/answer/search/q/:id"), answer.GetByQuestionId)
 	goji.Delete(v1API("/answer/search/q/:id"), answer.DeleteByQuestionID)
 
 	// 回答そのものの操作
+	goji.Delete(v1API("/answer/id/:id"), answer.Delete)
+
 	goji.Post(v1API("/answer/search/id/:id"), answer.Update)
 	goji.Get(v1API("/answer/search/id/:id"), answer.GetById)
-	goji.Delete(v1API("/answer/search/id/:id"), answer.Delete)
 
 	// goji.Post(v1API("/question/answer"), question.Ansewer)
 	// goji.Get(v1API("/question/answer"), question.Get)
