@@ -31,7 +31,7 @@ func InitRoute() {
 	goji.Post(v1API("/question/search"), question.QueryByWords)
 
 	// 解答一覧
-	goji.Put(v1API("/question/id/:questionId/answer"), answer.Create)
+	goji.Post(v1API("/question/id/:questionId/answer"), answer.Create)
 	goji.Get(v1API("/question/id/:questionId/answer"), answer.GetByQuestionId)
 	goji.Post(v1API("/question/id/:questionId/answer/:answerId"), answer.Update)
 	goji.Delete(v1API("/question/id/:questionId/answer/:answerId"), answer.DeleteByQuestionID) // 特権つけないと危険かも
