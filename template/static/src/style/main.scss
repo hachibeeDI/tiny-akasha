@@ -9,9 +9,18 @@
 
 
 .close__button {
+  $button-size: 20px;
   @include icon-font();
   @extend .octicon-x;
   border: none;
+  background-color: rgb(134, 134, 134);
+  width: $button-size;
+  height: $button-size;
+  line-height: 0;
+  text-align: center;
+  padding: 3px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 
@@ -55,6 +64,7 @@
   min-width: 200px;
   border: 1px #eee solid;
   margin: 15px 0;
+  cursor: pointer;
 
   &__inner {
     width: 90%;
@@ -101,10 +111,13 @@
 }
 
 .answer-form {
+  margin: 60px 0 40px 0;
   &__name {
     display: block;
   }
   &__content {
     display: block;
+    width: 40%;
+    height: 330px;
   }
 }

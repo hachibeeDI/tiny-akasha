@@ -12,7 +12,7 @@ module.exports = function(component) {
       <p className="question__content" >{component.props.content}</p>
       <h3 className="answers-section__header">回答</h3>
       <ul className="answers"> {answers} </ul>
-      <form onSubmit={component.onHandleAnswerFormSubmit}>
+      <form className="answer-form" onSubmit={component.onHandleAnswerFormSubmit}>
         <input type='text' placeholder='your name' name='user' className="answer-form__name" />
         <textarea name='content' className="answer-form__content"></textarea>
         <button type='submit'>投稿</button>

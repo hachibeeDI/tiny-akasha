@@ -24,4 +24,14 @@ li {
   margin: 10px 0;
 }
 
-
+button, .button {
+  border: none;
+  border-right: 3px solid #2C8413;
+  border-bottom: 2px solid #375C2D;
+  border-radius: 2px;
+  color: white;
+  background-color: rgb(18, 168, 105);
+  height: 36px;
+  line-height: 33px;
+  width: 55px;
+}

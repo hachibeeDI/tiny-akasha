@@ -8,6 +8,7 @@ $black: #454545;
 }
 
 .button__open-post {
+  @include icon-font();
   width: 40px;
   height: 30px;
   background-color: #FFF;
