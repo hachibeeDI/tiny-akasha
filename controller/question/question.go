@@ -57,6 +57,11 @@ func GetById(c web.C, w http.ResponseWriter, r *http.Request) {
 
 func QueryByWords(c web.C, w http.ResponseWriter, r *http.Request) {
 	word := r.FormValue("word")
+	// 検索語彙がなければデフォルト表示
+	if word == "" {
+		Get(c, w, r)
+		return
+	}
 	questions := question.SelectByWord(entity.Db, word)
 	if questions == nil {
 		helper.RenderJson(map[string]interface{}{"error": "no data matched"}, w)
