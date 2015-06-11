@@ -70,12 +70,25 @@
   border: 1px #eee solid;
   margin: 15px 0;
   cursor: pointer;
-
+  &__title {
+    font-weight: bold;
+    font-size: 3.5rem;
+  }
   &__inner {
     width: 90%;
     margin: auto auto auto 15px;
     overflow: hidden;
   }
+}
+
+.each-question {
+  box-sizing: border-box;
+  padding: 20px 20px;
+  min-width: 200px;
+  border: 1px #eee solid;
+  margin: 15px 0;
+  cursor: pointer;
+
   &__posted-user {
     // TODO: もっといいの
     @include icon-font();
@@ -85,11 +98,6 @@
   &__title {
     font-weight: bold;
     font-size: 3.5rem;
-  }
-  &__digest {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
   }
   &__content {
     margin: 30px 0;

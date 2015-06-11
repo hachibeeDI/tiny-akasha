@@ -5,11 +5,11 @@ module.exports = function(component) {
     return React.createElement(eachAnswer, ans);
   });
   return (
-    <div className="question">
-      <button className="question__back-button" onClick={component.goBack}>戻る</button>
-      <h2 className="question__title">{component.props.title}</h2>
-      <p className="question__posted-user">{component.props.username}</p>
-      <p className="question__content" >{component.props.content}</p>
+    <div className="each-question">
+      <button className="each-question__back-button" onClick={component.goBack}>戻る</button>
+      <h2 className="each-question__title">{component.props.title}</h2>
+      <p className="each-question__posted-user">{component.props.username}</p>
+      <p className="each-question__content" >{component.props.content}</p>
       <h3 className="answers-section__header">回答</h3>
       <ul className="answers"> {answers} </ul>
       <form className="answer-form" onSubmit={component.onHandleAnswerFormSubmit}>
