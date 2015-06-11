@@ -19,6 +19,7 @@ func InitRoute() {
 	fmt.Println("route init")
 
 	goji.Get("/", question.Index)
+	goji.Get("/view/*", question.Index)
 
 	staticFs := http.FileServer(http.Dir(helper.DirName + "/template/static"))
 	goji.Get("/static/*", http.StripPrefix("/static", staticFs))
