@@ -16,10 +16,10 @@ QuestionComponent = React.createClass
 
   render: () ->
     $c('li', {className: 'question', key: @props.id, onClick: @showQuestion},
-      $c('div', {className: 'question__inner'}, [
+      $c('div', {className: 'question__inner'},
         $c('h3', {className: 'question__title'}, @props.title),
         $c('p', {className: 'question__digest'}, @props.content),
-      ])
+      )
     )
 
 

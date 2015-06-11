@@ -84,20 +84,17 @@ PostFrontComponent = React.createClass(
          @dispatch 'search:questions', data['questions']
 
   render: () ->
-    $c('nav', {className: 'controll-panel'}, [
-      $c('button', {
-        onClick: @showPostPanel,
-        className: 'button__open-post octicon-pencil'
-      }),
+    $c('nav', {className: 'controll-panel'},
+      $c('button', {onClick: @showPostPanel, className: 'button__open-post octicon-pencil'}),
       $c('input', {
         className: 'search-box',
         type: 'text',
         placeholder: 'search',
         onKeyDown: @seachQuestionsByWord,
         valueLink: @linkState('searchWord'),
-      }
+        }
       ),
-    ])
+    )
 )
 
 
