@@ -9,12 +9,16 @@ module.exports = function(component) {
       <button className="each-question__back-button" onClick={component.goBack}>戻る</button>
       <h2 className="each-question__title">{component.props.title}</h2>
       <p className="each-question__posted-user">{component.props.username}</p>
-      <p className="each-question__content" >{component.props.content}</p>
+      <pre className="each-question__content" >
+        {component.props.content}
+      </pre>
       <h3 className="answers-section__header">回答</h3>
-      <ul className="answers"> {answers} </ul>
+      <ul className="answers">
+        {answers}
+      </ul>
       <form className="answer-form" onSubmit={component.onHandleAnswerFormSubmit}>
-        <input type='text' placeholder='your name' name='user' className="answer-form__name" />
-        <textarea name='content' className="answer-form__content"></textarea>
+        <input type='text' placeholder='your name' ref='form__user' className="answer-form__name" />
+        <textarea ref='form__content' className="answer-form__content"></textarea>
         <button type='submit'>投稿</button>
       </form>
     </div>

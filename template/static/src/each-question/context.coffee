@@ -1,4 +1,4 @@
-request = require 'superagent'
+request = require 'superagent-bluebird-promise'
 
 EachQuestionComponent = React.createClass(
   mixins: [Arda.mixin]
@@ -8,17 +8,22 @@ EachQuestionComponent = React.createClass(
 
   onHandleAnswerFormSubmit: (ev) ->
     ev.preventDefault()
-    form = ev.target
-    username = form.elements['user'].value
-    content = form.elements['content'].value
+    username = React.findDOMNode(@refs.form__user)
+    content = React.findDOMNode(@refs.form__content)
     return if username == '' || content == ''
     request
       .post "/api/v1/question/id/#{@props.id}/answer"
-      .send name: username, content: content
+      .send name: username.value, content: content.value
       .set 'Accept', 'application/json'
-      .end (err, res) =>
+      .then (data) =>
         console.log 'question created'
-        @dispatch 'question:show', @props.id
+        username.value = ''
+        content.value = ''
+        @dispatch 'question:reload', @props.id
+
+      .catch (err) ->
+        console.error err
+
 
   render: () ->
     console.log 'each question component render', @props
@@ -26,6 +31,7 @@ EachQuestionComponent = React.createClass(
     template @
 )
 
+Actions = require '../index/actions'
 
 ###
 props:
@@ -43,14 +49,17 @@ class EachQuestionContext extends Arda.Context
 
   delegate: (subscribe) ->
     super
+
+    subscribe 'question:reload', (id) =>
+      Actions.reloadQuestion(id)
+
     subscribe 'answer:delete', (id) =>
       request
         .del "/api/v1/answer/id/#{id}"
         .end (err, res) =>
           return console.error err if err?
           console.log res
-          actions = require '../index/actions'
-          actions.showQuestion(@props.id)
+          Actions.reloadQuestion(@props.id)
 
 
   expandComponentProps: (props, state) ->
