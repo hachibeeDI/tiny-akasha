@@ -31,10 +31,15 @@
   color: #FFF;
   overflow: hidden;
   padding: 10px 0;
-}
-
-.header__inner {
-  @include center-width-baranser();
+  &__inner {
+    @include center-width-baranser();
+  }
+  &__title {
+    &__link-to-top {
+      text-decoration: none;
+      color: #fff;
+    }
+  }
 }
 
 
