@@ -19,9 +19,9 @@ QuestionComponent = React.createClass
       $c('div', {className: 'question__inner'},
         $c('h3', {className: 'question__title'}, @props.title),
         $c('p', {className: 'question__digest'}, @props.content),
+        $c('button', {className: 'question__delete-button'}, 'この質問を削除する'),
       )
     )
-
 
 
 module.exports = QuestionComponent
