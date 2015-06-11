@@ -32,7 +32,10 @@ class IndexContext extends Arda.Context
       actions.showQuestion(id)
 
   initState: (props) ->
-    return {questions: props['questions'] or [], }
+    # TODO: これはAPIのクエリ側で適切にソートして対処するように修正
+    questions = props['questions'] or []
+    questions.reverse()
+    return {questions: questions}
 
   expandComponentProps: (props, state) ->
     return {questions: state['questions']}

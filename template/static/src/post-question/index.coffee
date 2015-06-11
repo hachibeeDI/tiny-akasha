@@ -1,10 +1,20 @@
 $c = React.createElement.bind(React)
+IndexContext = require '../index/index'
 
 
 ###
 投稿用パネルの各項目などを管理する
 ###
 class PostPanelContext extends Arda.Context
+  delegate: (subscribe) ->
+    super
+    subscribe 'questions:reload', () =>
+      $.get('/api/v1/question')
+        .then (data) =>
+          console.log 'questions:reload occurd', data
+          unless data.error?
+            Routers.main.replaceContext(IndexContext, data)
+
   component: React.createClass(
     mixins: [Arda.mixin, React.addons.LinkedStateMixin]
     getInitialState: ()  ->
@@ -20,7 +30,12 @@ class PostPanelContext extends Arda.Context
         'name': @state.name
         'content': @state.content
       })
-      Routers.post.popContext()
+        .then (data) =>
+          console.log '/api/v1/question returns', data
+          @dispatch 'questions:reload'
+
+        .then (data) ->
+          Routers.post.popContext()
 
     render: () ->
       post__panel = $c('div', {className: 'post__panel', }, [
@@ -60,6 +75,7 @@ PostFrontComponent = React.createClass(
     Routers.post.pushContext(PostPanelContext, {})
 
   seachQuestionsByWord: (ev) ->
+    # TODO: submitイベントを捕まえたほうが良いかも
     return unless ev.keyCode == 13
     $.post('/api/v1/question/search', {'word': @state.searchWord})
      .done (data) =>
@@ -89,8 +105,8 @@ class PostContext extends Arda.Context
   delegate: (subscribe) ->
     super
     subscribe 'search:questions', (questions) =>
-      IndexContext = require '../index/index'
       Routers.main.pushContext(IndexContext, {questions: questions})
+
 
   component: PostFrontComponent
 
