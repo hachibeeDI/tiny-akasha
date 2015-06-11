@@ -1,3 +1,5 @@
+request = require 'superagent-bluebird-promise'
+
 
 loadQuestionData = (id) ->
   Promise.all([
@@ -28,4 +30,10 @@ module.exports = {
         )
       .catch (error) ->
         console.error 'each question', error
+
+  deleteQuestion: (id) ->
+    request
+      .del "/api/v1/question/id/#{id}"
+      .promise()
+
 }

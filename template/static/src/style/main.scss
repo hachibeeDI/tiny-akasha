@@ -69,7 +69,6 @@
   min-width: 200px;
   border: 1px #eee solid;
   margin: 15px 0;
-  cursor: pointer;
   &__title {
     font-weight: bold;
     font-size: 3.5rem;
@@ -78,6 +77,7 @@
     width: 90%;
     margin: auto auto auto 15px;
     overflow: hidden;
+    cursor: pointer;
   }
   &__delete-button {
     background-color: rgb(242, 93, 93);

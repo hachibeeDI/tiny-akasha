@@ -31,6 +31,16 @@ class IndexContext extends Arda.Context
     subscribe 'question:show', (id) =>
       actions.showQuestion(id)
 
+    subscribe 'question:delete', (id) =>
+      actions.deleteQuestion(id)
+        .then (data) =>
+          @update (s) => {questions: s.questions.filter (q) -> q.id != id}
+
+        .catch (err) ->
+          console.log 'question:delete has error'
+          console.error err
+
+
   initState: (props) ->
     # TODO: これはAPIのクエリ側で適切にソートして対処するように修正
     questions = props['questions'] or []
