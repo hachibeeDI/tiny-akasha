@@ -18,7 +18,8 @@
     "normalize.scss": "^0.1.0",
     "octicons": "^2.2.0",
     "react": "^0.13.3",
-    "superagent": "^1.2.0"
+    "superagent": "^1.2.0",
+    "superagent-bluebird-promise": "^2.0.2"
   },
   "devDependencies": {
     "coffee-loader": "^0.7.2",
