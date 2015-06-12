@@ -65,17 +65,21 @@
 
 .question {
   box-sizing: border-box;
-  padding: 20px 20px;
+  padding: 18px 20px;
+  width: 80%;
   min-width: 200px;
   border: 1px #eee solid;
-  margin: 15px 0;
+  margin: 20px 0;
+  box-shadow: 0 10px 18px -12px #C0C0C0;
   &__title {
+    margin-top: 0;
     font-weight: bold;
     font-size: 3.5rem;
   }
+  $left-margin: 15px;
   &__inner {
     width: 90%;
-    margin: auto auto auto 15px;
+    margin: auto auto auto $left-margin;
     overflow: hidden;
     cursor: pointer;
   }
@@ -87,7 +91,10 @@
     }
     width: auto;
     font-size: 80%;
-    margin-top: 20px;
+    margin: {
+      top: 20px;
+      left: $left-margin;
+    }
   }
 }
 
