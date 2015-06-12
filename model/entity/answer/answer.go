@@ -30,7 +30,7 @@ func CreateTableIfNotExists(db entity.DB) {
 				id integer AUTO_INCREMENT primary key
 				, question_id integer
 				, username varchar(40)
-				, content varchar(254)
+				, content TEXT
 			)CHARSET=utf8;`); err != nil {
 		panic(err)
 	}
