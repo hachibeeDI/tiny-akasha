@@ -8,10 +8,12 @@ module.exports = function(component) {
     <div className="each-question">
       <button className="each-question__back-button" onClick={component.goBack}>戻る</button>
       <h2 className="each-question__title">{component.props.title}</h2>
-      <p className="each-question__posted-user">{component.props.username}</p>
-      <pre className="each-question__content" >
-        {component.props.content}
-      </pre>
+      <div className="each-question__content" >
+        <p className="each-question__posted-user">{component.props.username}</p>
+        <pre className="each-question__text md-render-area" >
+          {component.props.content}
+        </pre>
+      </div>
       <h3 className="answers-section__header">回答</h3>
       <ul className="answers">
         {answers}
@@ -23,7 +25,7 @@ module.exports = function(component) {
           className="answer-form__content"
           onChange={_.throttle(component.renderPreviewMd, 200)}>
         </textarea>
-        <div className="answer-form__preview">{component.state.preview}</div>
+        <div className="answer-form__preview md-render-area">{component.state.preview}</div>
         <button type='submit'>投稿</button>
       </form>
     </div>

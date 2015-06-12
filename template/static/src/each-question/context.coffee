@@ -1,6 +1,20 @@
 request = require 'superagent-bluebird-promise'
 md2react = require 'md2react'
 
+###*
+* @param {string} txt
+* @return {Array}
+###
+_renderMd = (txt) ->
+  try
+    md2react txt,
+      gfm: true
+      breaks: true
+      tables: true
+  catch e
+    console.warn 'mark down parse error', e
+    []
+
 
 EachQuestionComponent = React.createClass(
   mixins: [Arda.mixin]
@@ -32,16 +46,7 @@ EachQuestionComponent = React.createClass(
         console.error err
 
   renderPreviewMd: (ev) ->
-    try
-      content = md2react @refs.form__content.getDOMNode().value,
-          gfm: true
-          breaks: true
-          tables: true
-      @setState
-        preview: content
-    catch e
-      console.warn 'mark down parse error', e
-      return
+    @setState preview: _renderMd @refs.form__content.getDOMNode().value
 
   render: () ->
     console.log 'each question component render', @props
@@ -82,6 +87,7 @@ class EachQuestionContext extends Arda.Context
 
   expandComponentProps: (props, state) ->
     console.log 'each question expand', props, state
+    props.content = _renderMd props.content
     return props
 
 
