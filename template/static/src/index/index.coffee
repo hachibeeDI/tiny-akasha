@@ -29,7 +29,7 @@ class IndexContext extends Arda.Context
       @update((s) => questions: questions)
 
     subscribe 'question:show', (id) =>
-      actions.showQuestion(id)
+      Navigator.navigate "/view/question/id/#{id}"
 
     subscribe 'question:delete', (id) =>
       actions.deleteQuestion(id)

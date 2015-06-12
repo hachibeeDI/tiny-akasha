@@ -12,6 +12,7 @@
     "arda": "^0.13.1",
     "bluebird": "^2.9.21",
     "coffee-script": "^1.9.1",
+    "grapnel": "^0.5.8",
     "gulp": "^3.8.11",
     "jquery": "^2.1.3",
     "lodash": "^3.6.0",

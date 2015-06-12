@@ -4,6 +4,8 @@ EachQuestionComponent = React.createClass(
   mixins: [Arda.mixin]
 
   goBack: (ev) ->
+    return if Routers.main.history.length <= 0
+    global.history.back()
     Routers.main.popContext()
 
   onHandleAnswerFormSubmit: (ev) ->
