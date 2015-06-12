@@ -38,21 +38,23 @@ class PostPanelContext extends Arda.Context
           Routers.post.popContext()
 
     render: () ->
-      post__panel = $c('div', {className: 'post__panel', }, [
-        $c('button', {onClick: @close, className: "close__button"}, ''),
-        $c('form', {className: 'post__panel__form', onSubmit: @postQuestion}, [
+      mdPreview = require('../markdown-previewer/component')
+      post__panel =
+        $c('div', {className: 'post-panel', },
+          $c('button', {onClick: @close, className: "close__button"}, ''),
+          $c('form', {className: 'post-panel__form', onSubmit: @postQuestion},
             $c('label', {className: 'label--row'},
-                ['タイトル', $c('input', {type: 'text', name: 'title', valueLink: @linkState('title')})]),
+                'タイトル', $c('input', {type: 'text', name: 'title', valueLink: @linkState('title')})),
             $c('label', {className: 'label--row'},
-                ['名前', $c('input', {type: 'text', name: 'name', valueLink: @linkState('name')})]),
+                '名前', $c('input', {type: 'text', name: 'name', valueLink: @linkState('name')})),
             $c('label', {className: 'label--row'},
-                ['内容', $c('textarea', {name: 'content', valueLink: @linkState('content')})]),
+                '内容', $c('textarea', {className: 'post-panel__form__content', name: 'content', valueLink: @linkState('content')})),
             $c('input', {type: 'submit', value: '投稿', }),
-          ]
-        )]
+            $c mdPreview, {addtionalClass: 'post-panel__preview', content: @state.content},
+          ),
       )
       return $c('div', {
-        className: 'post__panel--dark__cover'
+        className: 'post-panel--dark__cover'
       }, post__panel)
   )
 

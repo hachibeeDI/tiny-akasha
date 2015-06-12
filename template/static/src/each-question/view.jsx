@@ -9,7 +9,7 @@ module.exports = function(component) {
       <button className="each-question__back-button" onClick={component.goBack}>戻る</button>
       <h2 className="each-question__title">{component.props.title}</h2>
       <div className="each-question__content" >
-        <p className="each-question__posted-user">{component.props.username}</p>
+        <h4 className="each-question__posted-user">{component.props.username}</h4>
         <pre className="each-question__text md-render-area" >
           {component.props.content}
         </pre>
