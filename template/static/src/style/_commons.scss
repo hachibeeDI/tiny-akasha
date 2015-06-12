@@ -1,7 +1,9 @@
+@import "_color.scss";
 
 html, body {
   width: 100%;
   height: 100%;
+  background-color: $base-color;
 }
 
 html {
@@ -12,12 +14,17 @@ html {
 
 body {
   font-size: 1.5rem;
+  color: $text-black;
 }
 
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+h1, h2, h3, h4, h5 {
+  color: #1E415E;
 }
 
 li {
@@ -34,4 +41,23 @@ button, .button, input[type="submit"] {
   height: 36px;
   line-height: 33px;
   width: 55px;
+}
+
+input[type="text"], textarea {
+  border: 1px solid #EFEFEF;
+}
+
+input[type="text"] {
+  line-height: 2.7rem;
+  text-indent: 5px;
+}
+
+
+::selection {
+  background-color: #441F14;
+  color: #FEFEFE;
+}
+::-moz-selection {
+  background-color: #441F14;
+  color: #FEFEFE;
 }
