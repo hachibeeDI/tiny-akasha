@@ -18,7 +18,12 @@ module.exports = function(component) {
       </ul>
       <form className="answer-form" onSubmit={component.onHandleAnswerFormSubmit}>
         <input type='text' placeholder='your name' ref='form__user' className="answer-form__name" />
-        <textarea ref='form__content' className="answer-form__content"></textarea>
+        <textarea
+          ref='form__content'
+          className="answer-form__content"
+          onChange={_.throttle(component.renderPreviewMd, 200)}>
+        </textarea>
+        <div className="answer-form__preview">{component.state.preview}</div>
         <button type='submit'>投稿</button>
       </form>
     </div>

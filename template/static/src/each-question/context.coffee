@@ -1,7 +1,12 @@
 request = require 'superagent-bluebird-promise'
+md2react = require 'md2react'
+
 
 EachQuestionComponent = React.createClass(
   mixins: [Arda.mixin]
+
+  getInitialState: ->
+    preview: []
 
   goBack: (ev) ->
     return if Routers.main.history.length <= 0
@@ -26,6 +31,17 @@ EachQuestionComponent = React.createClass(
       .catch (err) ->
         console.error err
 
+  renderPreviewMd: (ev) ->
+    try
+      content = md2react @refs.form__content.getDOMNode().value,
+          gfm: true
+          breaks: true
+          tables: true
+      @setState
+        preview: content
+    catch e
+      console.warn 'mark down parse error', e
+      return
 
   render: () ->
     console.log 'each question component render', @props
