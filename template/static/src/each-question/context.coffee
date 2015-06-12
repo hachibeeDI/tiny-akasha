@@ -40,6 +40,7 @@ EachQuestionComponent = React.createClass(
         console.log 'question created'
         username.value = ''
         content.value = ''
+        @setState preview: []
         @dispatch 'question:reload', @props.id
 
       .catch (err) ->
