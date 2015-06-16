@@ -23,6 +23,13 @@ ul {
   padding: 0;
 }
 
+a {
+  $_color: #1C7FBB;
+  text-decoration: none;
+  color: $_color;
+  border-bottom: 1px solid $_color;
+}
+
 h1, h2, h3, h4, h5 {
   color: #1E415E;
 }
@@ -52,6 +59,10 @@ input[type="text"] {
   text-indent: 5px;
 }
 
+hr {
+  margin: 30px auto;
+  border: 1px solid #DADADA;
+}
 
 ::selection {
   background-color: #441F14;
