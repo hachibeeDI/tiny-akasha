@@ -1,6 +1,11 @@
 FROM debian:jessie
 MAINTAINER OGURA_Daiki 8hachibee125@gmail.com
 
+ENV MYSQL_USER admin
+ENV MYSQL_PASS qwerty15
+ENV DB_HOST localhost
+ENV DB_PORT 3306
+
 
 RUN apt-get update -yq && apt-get upgrade -yq && \
     apt-get install -yq --no-install-recommends supervisor && \
@@ -19,4 +24,6 @@ ADD ./src/templates/index.html /var/http/tiny-akasha/template/
 ADD ./src/templates/static/vendor/react/react-with-addons.min.js /var/http/tiny-akasha/template/static/vendor/react/
 ADD ./src/templates/static/vendor/octicons/* /var/http/tiny-akasha/template/static/vendor/octicons/
 
-# ENTRYPOINT []
+EXPOSE 80
+
+ENTRYPOINT ["supervisord"]
