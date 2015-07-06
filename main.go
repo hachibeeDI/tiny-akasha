@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 
@@ -18,16 +19,32 @@ import (
 	"github.com/hachibeeDI/tiny-akasha/model/entity/question"
 )
 
+func getDBADDR() (string, string) {
+	dockerAlias := os.Getenv("MROONGA_PORT")
+	if dockerAlias == "" {
+		DB_HOST := os.Getenv("DB_HOST")
+		DB_PORT := os.Getenv("DB_PORT")
+		if DB_HOST == "" {
+			DB_HOST = "localhost"
+		}
+		if DB_PORT == "" {
+			DB_PORT = "3306"
+		}
+		return DB_HOST, DB_PORT
+	}
+	// tcp://0.0.0.0:0000
+	tcpAddr := strings.Split(dockerAlias, ":")
+	port := tcpAddr[2]
+	host := os.Getenv("MROONGA_PORT_" + port + "_TCP_ADDR")
+	return host, port
+}
+
 func makeConnectionString(dbname string) string {
 	flag.Parse()
-	DB_HOST := os.Getenv("DB_HOST")
-	DB_PORT := os.Getenv("DB_PORT")
-	if DB_HOST == "" {
-		DB_HOST = "localhost"
-	}
-	if DB_PORT == "" {
-		DB_PORT = "3306"
-	}
+	DB_HOST, DB_PORT := getDBADDR()
+	fmt.Println("dbhost %s", DB_HOST)
+	fmt.Println("dbport %s", DB_PORT)
+
 	MYSQL_USER := os.Getenv("MYSQL_USER")
 	MYSQL_PASS := os.Getenv("MYSQL_PASS")
 	if MYSQL_USER == "" {
@@ -37,7 +54,7 @@ func makeConnectionString(dbname string) string {
 		MYSQL_PASS = "password"
 	}
 	protocol := "tcp"
-	return fmt.Sprintf("%s:%s@%s([%s]:%s)/%s", MYSQL_USER, MYSQL_PASS, protocol, DB_HOST, DB_HOST, dbname)
+	return fmt.Sprintf("%s:%s@%s([%s]:%s)/%s", MYSQL_USER, MYSQL_PASS, protocol, DB_HOST, DB_PORT, dbname)
 }
 
 func PrePareDB() *sql.DB {
