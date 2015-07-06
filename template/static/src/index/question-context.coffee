@@ -9,16 +9,23 @@ props:
   username: string
   content: string
 ###
-QuestionComponent = React.createClass(
+QuestionComponent = React.createClass
   mixins: [Arda.mixin]
   showQuestion: () ->
-    EachQuestionContext = require '../each-question/context'
-    Routers.main.pushContext(EachQuestionContext, {id: @props.id})
+    @dispatch 'question:show', @props.id
+
+  deleteQuestion: () ->
+    @dispatch 'question:delete', @props.id
 
   render: () ->
-    console.log 'question!', @props
-    $c('li', {key: @props.id, onClick: @showQuestion}, @props.title)
-)
+    # TODO: 削除ボタンのデザインや仕様は要検討
+    $c('li', {className: 'question', key: @props.id},
+      $c('div', {className: 'question__inner', onClick: @showQuestion},
+        $c('h3', {className: 'question__title'}, @props.title),
+        $c('p', {className: 'question__digest'}, @props.content),
+      ),
+      $c('button', {className: 'question__delete-button', onClick: @deleteQuestion}, 'この質問を削除する'),
+    )
 
 
 module.exports = QuestionComponent

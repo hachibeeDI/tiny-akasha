@@ -1,0 +1,78 @@
+@import './_size-definitions.scss';
+
+$black: #454545;
+
+.controll-panel {
+  @include center-width-baranser();
+  margin: auto;
+}
+
+.button__open-post {
+  @include icon-font();
+  width: 40px;
+  height: 30px;
+  background-color: #FFF;
+  color: $black;
+  border-radius: 2px;
+  border: none;
+}
+
+.search-box {
+  color: $black;
+  border: none;
+  margin: auto 30px;
+  line-height: 2.5rem;
+  text-indent: 5px;
+  border-radius: 2px;
+}
+
+.post-panel--dark__cover {
+  position: fixed;
+  z-index: 5000000;
+  top: 0;
+  min-width: 100%;
+  width: auto;
+  min-height: 100%;
+  height: auto;
+  background-color: rgba(34, 34, 34, 0.85);
+  color: $black;
+}
+
+.post-panel {
+  position: absolute;
+  background-color: #FEFEFE;
+  color: $black;
+  border-radius: 3px;
+  border-right: 2px #E0E0E0 solid;
+  border-bottom: 2px #E0E0E0 solid;
+  z-index: 5000001;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 50%;
+  min-width: 320px;
+  height: 70%;
+  min-width: 500px;
+  padding: 5px 30px 10px;
+  overflow: scroll;
+  &__form {
+    margin-top: 3px;
+
+    &__content {
+      width: 70%;
+      min-height: 300px;
+    }
+
+  }
+
+  &__preview {
+    margin: 30px 0;
+    width: 90%;
+    min-height: 30px;
+    border: 1px solid #eee;
+    padding: 5px 10px;
+  }
+}
+

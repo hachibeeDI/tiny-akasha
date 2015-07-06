@@ -55,6 +55,22 @@ func GetById(c web.C, w http.ResponseWriter, r *http.Request) {
 	helper.RenderJson(question.SelectById(entity.Db, id), w)
 }
 
+func QueryByWords(c web.C, w http.ResponseWriter, r *http.Request) {
+	word := r.FormValue("word")
+	// 検索語彙がなければデフォルト表示
+	if word == "" {
+		Get(c, w, r)
+		return
+	}
+	questions := question.SelectByWord(entity.Db, word)
+	if questions == nil {
+		helper.RenderJson(map[string]interface{}{"error": "no data matched"}, w)
+		return
+	}
+	obj := map[string]interface{}{"questions": questions}
+	helper.RenderJson(obj, w)
+}
+
 func Delete(c web.C, w http.ResponseWriter, r *http.Request) {
 	s_id := c.URLParams["id"]
 	id, err := strconv.Atoi(s_id)

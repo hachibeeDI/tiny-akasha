@@ -1,26 +1,20 @@
 
 $c = React.createElement.bind(React)
 
-QuestionComponent = require './question-context'
+QuestionContext = require './question-context'
 
 
 IndexComponent = React.createClass(
   mixins: [Arda.mixin]
-  componentWillMount: () ->
-    $.get('/api/v1/question')
-      .then((data) =>
-        console.log data
-        unless data.error?
-          @dispatch 'show:questions', data['questions']
-      )
+  # componentWillMount: () ->
 
   render: () ->
     console.log 'index component'
     $c('div', {},
-      $c('ul', {},
+      $c('ul', {className: 'questions__ul'},
         @props.questions.map (q) ->
           q['key'] = q['id']
-          $c(QuestionComponent, q)
+          $c(QuestionContext, q)
       ),
     )
 )
@@ -30,14 +24,28 @@ class IndexContext extends Arda.Context
   component: IndexComponent
   delegate: (subscribe) ->
     super
+    actions = require './actions'
     subscribe 'show:questions', (questions) =>
       @update((s) => questions: questions)
 
     subscribe 'question:show', (id) =>
-      Routers.main.pushContext(require('../each-question/context'), {id: id})
+      Navigator.navigate "/view/question/id/#{id}"
+
+    subscribe 'question:delete', (id) =>
+      actions.deleteQuestion(id)
+        .then (data) =>
+          @update (s) => {questions: s.questions.filter (q) -> q.id != id}
+
+        .catch (err) ->
+          console.log 'question:delete has error'
+          console.error err
+
 
   initState: (props) ->
-    return {questions: [], }
+    # TODO: これはAPIのクエリ側で適切にソートして対処するように修正
+    questions = props['questions'] or []
+    questions.reverse()
+    return {questions: questions}
 
   expandComponentProps: (props, state) ->
     return {questions: state['questions']}

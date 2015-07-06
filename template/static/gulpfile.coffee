@@ -4,6 +4,7 @@ coffee  = require 'gulp-coffee'
 uglify = require('gulp-uglify')
 # sass    = require 'gulp-sass'
 plumber = require 'gulp-plumber'
+# changed  = require 'gulp-changed'
 
 gulp.task 'default', ['build']
 gulp.task 'build', [
@@ -15,14 +16,6 @@ gulp.task 'build:coffee', ->
     .pipe(coffee())
     .pipe(gulp.dest('temp'))
 
-
-jade    = require 'gulp-react-jade'
-
-gulp.task 'build:jade', ->
-  gulp.src('src/**/*.jade')
-    .pipe plumber()
-    .pipe jade(globalReact: true)
-    .pipe(gulp.dest('temp'))
 
 
 sass = require('gulp-sass')
@@ -43,7 +36,7 @@ gulp.task 'compress:js', ['build:coffee', 'build:bundle'], ->
 # source = require 'vinyl-source-stream'
 webpack = require('gulp-webpack')
 
-gulp.task 'build:bundle', ['build:coffee', 'build:jade', 'build:css'], shell.task [
+gulp.task 'build:bundle', ['build:coffee', 'build:css'], shell.task [
   'webpack'
 ]
 

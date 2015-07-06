@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './temp/entry.js',
+  entry: './src/entry.coffee',
   output: {
     path: __dirname + '/dist/',
     filename: 'bundle.js',
@@ -10,7 +10,6 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.coffee$/, loader: "coffee-loader" },
-      { test: /\.ts$/, loader: 'typescript-loader' },
       {
         //tell webpack to use jsx-loader for all *.jsx files
         test: /\.jsx$/,

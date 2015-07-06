@@ -25,10 +25,11 @@ func CreateTableIfNotExists(db entity.DB) {
 	if _, err := db.Exec(
 		`CREATE TABLE IF NOT EXISTS
 			question(
-				id integer primary key auto_increment
+				id integer AUTO_INCREMENT primary key
 				, title varchar(40)
 				, username varchar(40)
-				, content varchar(254)
+				, content MEDIUMTEXT
+				, FULLTEXT INDEX(title, content)
 			) Engine=Mroonga DEFAULT CHARSET=utf8;`); err != nil {
 		panic(err)
 	}
@@ -73,4 +74,15 @@ func SelectById(db entity.DB, id int) *Question {
 		panic(err)
 	}
 	return que
+}
+
+// SEEALSO: http://redmine.groonga.org/projects/mroonga/wiki/Mroonga_full_text_Search_in_Boolean_mode_%28jp%29_
+func SelectByWord(db entity.DB, word string) []*Question {
+	var ques []*Question
+	mroongaPredicate := "*DOR " + word
+	err := meddler.QueryAll(db, &ques, "SELECT * FROM question WHERE MATCH(title, content) AGAINST(?)", mroongaPredicate)
+	if err != nil {
+		panic(err)
+	}
+	return ques
 }

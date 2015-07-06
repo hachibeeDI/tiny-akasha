@@ -1,5 +1,194 @@
+@charset "utf-8";
+
 @import '../../node_modules/normalize.scss/normalize.scss';
+@import './_color.scss';
+
+@import './_commons.scss';
+
+@import './_size-definitions.scss';
+
+@import './font';
+
+
+.close__button {
+  $button-size: 20px;
+  @include icon-font();
+  @extend .octicon-x;
+  border: none;
+  background-color: rgb(134, 134, 134);
+  width: $button-size;
+  height: $button-size;
+  line-height: 0;
+  text-align: center;
+  padding: 3px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+
+.header {
+  width: 100%;
+  height: auto;
+  background-color: #275694;
+  color: #FFF;
+  overflow: hidden;
+  padding: 10px 0;
+  &__inner {
+    @include center-width-baranser();
+  }
+  &__title {
+    &__link-to-top {
+      text-decoration: none;
+      border: none;
+      color: #fff;
+    }
+  }
+}
+
+
+.main {
+  @include center-width-baranser();
+}
+
+
+@import './post-panel';
 
 .label--row {
   display: block;
+  margin: 10px;
+  span {  // FIXME:
+    display: inline-block;
+    width: 80px;
+  }
 }
+
+
+.questions {
+}
+
+.question {
+  box-sizing: border-box;
+  padding: 18px 20px;
+  width: 80%;
+  min-width: 200px;
+  border: 1px #eee solid;
+  margin: 40px 0 53px 0;
+  box-shadow: 0 10px 18px -12px #C0C0C0;
+  background-color: $rich-white;
+  &__title {
+    margin-top: 0;
+    font-weight: bold;
+    font-size: 3.5rem;
+  }
+  $left-margin: 15px;
+  &__inner {
+    width: 90%;
+    margin: auto auto auto $left-margin;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  &__delete-button {
+    background-color: rgb(242, 93, 93);
+    border: {
+      right: 2px solid rgb(192, 38, 38);
+      bottom: 3px solid rgb(158, 6, 6);
+    }
+    width: auto;
+    font-size: 80%;
+    margin: {
+      top: 20px;
+      left: $left-margin;
+    }
+  }
+}
+
+
+$width-in-each-question: 70%;
+
+.each-question {
+  box-sizing: border-box;
+  padding: 20px 20px;
+  min-width: 200px;
+  // border: 1px #eee solid;
+  margin: 15px 0;
+
+  &__title {
+    font-weight: bold;
+    font-size: 3.5rem;
+  }
+  &__posted-user {
+    // TODO: もっといいの
+    @include icon-font();
+    @extend .octicon-octoface;
+    font-size: 1.9rem;
+    margin-right: 8px;
+    &:before {
+      margin-right: 10px;
+    }
+  }
+  &__content {
+    background-color: $rich-white;
+    margin: 30px 0;
+    padding: 20px 10px;
+    box-shadow: 0 10px 18px -12px #C0C0C0;
+    border: 1px solid #F2F2F2;
+    width: 70%;
+  }
+  &__text {
+
+  }
+}
+
+
+.answers-section__header {
+  margin: 35px 0 10px 0;
+  font-size: 2.6rem;
+  color: #3D3D3D;
+  border-bottom: 2px solid #D5D5D5;
+}
+
+.answer {
+  &__content {
+    background-color: $rich-white;
+    width: 70%;
+    border: 1px #eee solid;
+    margin: 40px 0 53px 0;
+    padding: 20px 10px;
+    box-shadow: 0 10px 18px -12px #C0C0C0;
+  }
+  &__delete {
+    margin-left: 50px;
+  }
+  &__user {
+    @include icon-font();
+    @extend .octicon-octoface;
+    margin-bottom: 2px;
+    // font-weight: bold;
+    font-size: 1.9rem;
+    &:before {
+       margin-right: 10px;
+    }
+  }
+}
+
+.answer-form {
+  margin: 60px 0 40px 0;
+  &__name {
+    display: block;
+  }
+  &__content {
+    display: block;
+    width: 40%;
+    height: 330px;
+  }
+  // markdownのコンパイル結果欄
+  &__preview {
+    margin: 35px 0;
+    padding: 8px;
+    background-color: #FCFCFC;
+    border: 1px solid #DFDFDF;
+  }
+}
+
+@import '_in-markdown.scss';
+
