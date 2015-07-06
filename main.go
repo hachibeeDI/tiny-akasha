@@ -20,12 +20,24 @@ import (
 
 func makeConnectionString(dbname string) string {
 	flag.Parse()
-	host := "localhost"
-	port := "3306"
-	user := os.Args[1]
-	pass := os.Args[2]
+	DB_HOST := os.Getenv("DB_HOST")
+	DB_PORT := os.Getenv("DB_PORT")
+	if DB_HOST == "" {
+		DB_HOST = "localhost"
+	}
+	if DB_PORT == "" {
+		DB_PORT = "3306"
+	}
+	MYSQL_USER := os.Getenv("MYSQL_USER")
+	MYSQL_PASS := os.Getenv("MYSQL_PASS")
+	if MYSQL_USER == "" {
+		MYSQL_USER = "root"
+	}
+	if MYSQL_PASS == "" {
+		MYSQL_PASS = "password"
+	}
 	protocol := "tcp"
-	return fmt.Sprintf("%s:%s@%s([%s]:%s)/%s", user, pass, protocol, host, port, dbname)
+	return fmt.Sprintf("%s:%s@%s([%s]:%s)/%s", MYSQL_USER, MYSQL_PASS, protocol, DB_HOST, DB_HOST, dbname)
 }
 
 func PrePareDB() *sql.DB {
