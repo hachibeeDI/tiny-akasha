@@ -11,6 +11,7 @@ RUN apt-get update -yq && apt-get upgrade -yq && \
     apt-get install -yq --no-install-recommends supervisor && \
     apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
+ADD ./env/supervisord/supervisord.conf /etc/supervisor/
 ADD ./env/supervisord/goji.conf /etc/supervisor/conf.d/
 
 RUN mkdir -p /var/http/tiny-akasha/template/static/dist/; \
@@ -26,4 +27,6 @@ ADD ./src/templates/static/vendor/octicons/* /var/http/tiny-akasha/template/stat
 
 EXPOSE 80
 
-ENTRYPOINT ["supervisord"]
+
+ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+
