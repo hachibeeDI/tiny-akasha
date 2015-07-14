@@ -1,3 +1,5 @@
+gom 'golang.org/x/crypto/bcrypt'
+
 gom 'github.com/zenazn/goji'
 gom 'github.com/zenazn/goji/web'
 
