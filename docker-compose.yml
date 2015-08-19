@@ -1,0 +1,17 @@
+mroonga:
+    image: soundkitchen/mroonga
+    ports:
+        - "3306:3306"
+    environment:
+        MYSQL_USER: foo
+        MYSQL_PASS: bar
+
+akasha:
+    build: dockerfile
+    ports:
+        - "8000:8000"
+    links:
+        - mroonga:mroonga
+    environment:
+        MYSQL_USER: foo
+        MYSQL_PASS: bar
