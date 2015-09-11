@@ -1,22 +1,12 @@
 gulp    = require 'gulp'
-shell   = require 'gulp-shell'
-coffee  = require 'gulp-coffee'
-uglify = require('gulp-uglify')
-# sass    = require 'gulp-sass'
+uglify = require 'gulp-uglify'
 plumber = require 'gulp-plumber'
-# changed  = require 'gulp-changed'
+
 
 gulp.task 'default', ['build']
 gulp.task 'build', [
   'build:bundle'
 ]
-
-gulp.task 'build:coffee', ->
-  gulp.src('src/**/*.coffee')
-    .pipe(coffee())
-    .pipe(gulp.dest('temp'))
-
-
 
 sass = require('gulp-sass')
 
@@ -27,18 +17,49 @@ gulp.task 'build:css', ->
     .pipe(sass())
     .pipe(gulp.dest('dist/style/'))
 
-gulp.task 'compress:js', ['build:coffee', 'build:bundle'], ->
-  gulp.src 'temp/**/*.js'
-      .pipe uglify()
-      .pipe gulp.dest 'dist/'
+# gulp.task 'compress:js', ['build:bundle'], ->
+#   gulp.src 'temp/**/*.js'
+#       .pipe uglify()
+#       .pipe gulp.dest 'dist/'
 
 
-# source = require 'vinyl-source-stream'
-webpack = require('gulp-webpack')
+through2 = require 'through2'
+browserify = require 'browserify'
+babelify = require 'babelify'
+B_CONF = {
+  debug: true
+  basedir: './src/script/'
+  shim: {
+    lodash: {
+      path: './node_modules/lodash/index.js'
+      exports: 'lodash'
+    }
+    react: {
+      path: './node_modules/react/dist/react-with-addons.js'
+      exports: 'react'
+    }
+  }
+}
+makeBabel = () ->
+  return through2.obj((file, enc, next) ->
+    br = browserify(file.path, B_CONF)
+      .transform 'coffeeify'
+      .transform(babelify.configure({stage: 2}))
+    br.bundle(
+      (err, res) ->
+        console.log file.path
+        if err
+          return next(err)
+        file.contents = res
+        next(null, file)
+    )
+  )
 
-gulp.task 'build:bundle', ['build:coffee', 'build:css'], shell.task [
-  'webpack'
-]
+# via: https://github.com/substack/node-browserify/issues/1198
+gulp.task 'build:js', ->
+  gulp.src('./src/entry.coffee')
+    .pipe(makeBabel())
+    .pipe(gulp.dest('dist/js/'))
 
 
 gulp.task 'default', ['build']
