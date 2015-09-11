@@ -57,7 +57,7 @@ makeBabel = () ->
 
 # via: https://github.com/substack/node-browserify/issues/1198
 gulp.task 'build:js', ->
-  gulp.src('./src/entry.coffee')
+  gulp.src('./src/entry.js')
     .pipe(makeBabel())
     .pipe(gulp.dest('dist/js/'))
 

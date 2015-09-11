@@ -1,54 +1,65 @@
 
-$c = React.createElement.bind(React)
+let $c = React.createElement.bind(React);
 
-QuestionContext = require './question-context'
+import QuestionContext from './question-context';
 
 
-IndexComponent = React.createClass(
-  mixins: [Arda.mixin]
-  # componentWillMount: () ->
+var IndexComponent = React.createClass({
+  mixins: [Arda.mixin],
 
-  render: () ->
-    console.log 'index component'
-    $c('div', {},
+  render: () => {
+    return $c('div', {},
       $c('ul', {className: 'questions__ul'},
-        @props.questions.map (q) ->
-          q['key'] = q['id']
-          $c(QuestionContext, q)
-      ),
-    )
-)
+        this.props.questions.map((q) => {
+          q['key'] = q['id'];
+          return $c(QuestionContext, q);
+        })
+      )
+    );
+  }
+});
 
 
-class IndexContext extends Arda.Context
-  component: IndexComponent
-  delegate: (subscribe) ->
-    super
-    actions = require './actions'
-    subscribe 'show:questions', (questions) =>
-      @update((s) => questions: questions)
+export default class IndexContext extends Arda.Context {
+  get component() {
+    return IndexComponent;
+  }
 
-    subscribe 'question:show', (id) =>
-      Navigator.navigate "/view/question/id/#{id}"
+  delegate(subscribe) {
+    super.delegate();
+    var actions = require('./actions');
+    subscribe('show:questions', (questions) => {
+      this.update((s) => {questions: questions});
+    });
 
-    subscribe 'question:delete', (id) =>
+    subscribe('question:show', (id) => {
+      Navigator.navigate("/view/question/id/#{id}");
+    });
+
+    subscribe('question:delete', (id) => {
       actions.deleteQuestion(id)
-        .then (data) =>
-          @update (s) => {questions: s.questions.filter (q) -> q.id != id}
+        .then((data) => {
+          this.update((s) => {
+            let qs = s.questions.filter((q) => { q.id != id});
+            return {questions: qs};
+          });
+        })
+        .catch((err) => {
+          console.log('question:delete has error')
+          console.error(err)
+        });
+    });
+  }
 
-        .catch (err) ->
-          console.log 'question:delete has error'
-          console.error err
+  initState(props) {
+    // TODO: これはAPIのクエリ側で適切にソートして対処するように修正
+    var questions = props['questions'] || [];
+    questions.reverse();
+    return {questions: questions};
+  }
 
+  expandComponentProps(props, state) {
+    return {questions: state['questions']};
+  }
+}
 
-  initState: (props) ->
-    # TODO: これはAPIのクエリ側で適切にソートして対処するように修正
-    questions = props['questions'] or []
-    questions.reverse()
-    return {questions: questions}
-
-  expandComponentProps: (props, state) ->
-    return {questions: state['questions']}
-
-
-module.exports = IndexContext

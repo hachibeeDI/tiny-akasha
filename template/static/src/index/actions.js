@@ -1,39 +1,46 @@
-request = require 'superagent-bluebird-promise'
+import request from 'superagent-bluebird-promise';
 
 
-loadQuestionData = (id) ->
-  Promise.all([
+var loadQuestionData = (id) => {
+  return Promise.all([
     $.get("/api/v1/question/id/#{id}"),
     $.get("/api/v1/question/id/#{id}/answer"),
-  ])
+  ]);
+};
 
 
-module.exports = {
-  showQuestion: (id) ->
+export default Actions = {
+  showQuestion: (id) => {
     loadQuestionData(id)
-      .then (data) =>
-        console.log 'question:show occurd', data
+      .then((data) => {
+        console.log('question:show occurd', data);
         Routers.main.pushContext(
           require('../each-question/context'),
           _.merge(data[0], data[1])
-        )
-      .catch (error) ->
-        console.error 'each question', error
+        );
+      })
+      .catch((error) => {
+        console.error('each question', error);
+      });
+  },
 
-  reloadQuestion: (id) ->
+  reloadQuestion: (id) => {
     loadQuestionData(id)
-      .then (data) =>
-        console.log 'question:reload occurd', data
+      .then((data) => {
+        console.log('question:reload occurd', data);
         Routers.main.replaceContext(
           require('../each-question/context'),
           _.merge(data[0], data[1])
-        )
-      .catch (error) ->
-        console.error 'each question', error
+        );
+      })
+      .catch((error) => {
+        console.error('each question', error);
+      });
+  },
 
-  deleteQuestion: (id) ->
-    request
-      .del "/api/v1/question/id/#{id}"
-      .promise()
-
+  deleteQuestion: (id) => {
+    return request
+      .del("/api/v1/question/id/#{id}")
+      .promise();
+  }
 }

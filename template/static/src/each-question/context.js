@@ -1,95 +1,118 @@
-request = require 'superagent-bluebird-promise'
-md2react = require 'md2react'
+import request from 'superagent-bluebird-promise';
+import md2react from 'md2react';
 
-###*
-* @param {string} txt
-* @return {Array}
-###
-_renderMd = (txt) ->
-  try
-    md2react txt,
-      gfm: true
-      breaks: true
+/* 
+ * this.param {string} txt
+ * this.return {Array}
+ **/
+_renderMd = (txt) => {
+  try {
+    return md2react(txt, {
+      gfm: true,
+      breaks: true,
       tables: true
-  catch e
-    console.warn 'mark down parse error', e
-    []
+    });
+  }
+  catch (e) {
+    console.warn('mark down parse error', e);
+    return [];
+  }
+}
 
 
-EachQuestionComponent = React.createClass(
-  mixins: [Arda.mixin]
+EachQuestionComponent = React.createClass({
+  mixins: [Arda.mixin],
 
-  getInitialState: ->
+  getInitialState: () => {
     preview: []
+  },
 
-  goBack: (ev) ->
-    return if Routers.main.history.length <= 0
-    global.history.back()
-    Routers.main.popContext()
+  goBack: (ev) => {
+    if (Routers.main.history.length <= 0) {
+      return ;
+    }
+    global.history.back();
+    Routers.main.popContext();
+  },
 
-  onHandleAnswerFormSubmit: (ev) ->
-    ev.preventDefault()
-    username = React.findDOMNode(@refs.form__user)
-    content = React.findDOMNode(@refs.form__content)
-    return if username == '' || content == ''
+  onHandleAnswerFormSubmit: (ev) => {
+    ev.preventDefault();
+
+    let username = React.findDOMNode(this.refs.form__user)
+    let content = React.findDOMNode(this.refs.form__content)
+    if (username == '' || content == '') { return ; }
     request
-      .post "/api/v1/question/id/#{@props.id}/answer"
-      .send name: username.value, content: content.value
-      .set 'Accept', 'application/json'
-      .then (data) =>
-        console.log 'question created'
-        username.value = ''
-        content.value = ''
-        @setState preview: []
-        @dispatch 'question:reload', @props.id
+      .post("/api/v1/question/id///{this.props.id}/answer")
+      .send({name: username.value, content: content.value})
+      .set('Accept', 'application/json')
+      .then((data) => {
+        console.log('question created');
+        username.value = '';
+        content.value = '';
+        this.setState({preview: []});
+        this.dispatch('question:reload', this.props.id);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  },
 
-      .catch (err) ->
-        console.error err
+  renderPreviewMd: (ev) => {
+    this.setState({preview: _renderMd(this.refs.form__content.getDOMNode().value)});
+  },
 
-  renderPreviewMd: (ev) ->
-    @setState preview: _renderMd @refs.form__content.getDOMNode().value
+  render: () => {
+    console.log('each question component render', this.props);
+    let template = require('./view.jsx');
+    return template(this);
+  }
+});
 
-  render: () ->
-    console.log 'each question component render', @props
-    template = require('./view')
-    template @
-)
 
-Actions = require '../index/actions'
+const Actions = require('../index/actions');
 
-###
+/*
 props:
   id: number
   title: string
   username: string
   content: string
   answers: Array{string}
-###
-class EachQuestionContext extends Arda.Context
-  component: EachQuestionComponent
-  # initState: (props) ->
-  #   console.log 'each question init'
-  #   return {question: [], }
+*/
+export default class EachQuestionContext extends Arda.Context {
+  get component() {
+    return EachQuestionComponent;
+  }
+  // initState: (props) => {
+  //   console.log 'each question init'
+  //   return {question: [], }
 
-  delegate: (subscribe) ->
-    super
+  delegate(subscribe) {
+    super.delegate();
 
-    subscribe 'question:reload', (id) =>
-      Actions.reloadQuestion(id)
+    subscribe('question:reload', (id) => {
+      Actions.reloadQuestion(id);
+    });
 
-    subscribe 'answer:delete', (id) =>
+    subscribe('answer:delete', (id) => {
       request
-        .del "/api/v1/answer/id/#{id}"
-        .end (err, res) =>
-          return console.error err if err?
-          console.log res
-          Actions.reloadQuestion(@props.id)
+        .del("/api/v1/answer/id///{id}")
+        .end((err, res) => {
+          if (err) {
+            console.error(err);
+            return ;
+          }
+          console.log(res);
+          Actions.reloadQuestion(this.props.id);
+        });
+    });
+  }
+
+  expandComponentProps(props, state) {
+    console.log('each question expand', props, state);
+    props.content = _renderMd(props.content);
+    return props;
+  }
+}
 
 
-  expandComponentProps: (props, state) ->
-    console.log 'each question expand', props, state
-    props.content = _renderMd props.content
-    return props
-
-
-module.exports = EachQuestionContext

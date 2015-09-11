@@ -16,6 +16,7 @@
     "coffee-script": "^1.9.1",
     "grapnel": "^0.5.8",
     "gulp": "^3.8.11",
+    "jquery": "^2.1.4",
     "lodash": "^3.6.0",
     "md2react": "^0.8.8",
     "normalize.scss": "^0.1.0",

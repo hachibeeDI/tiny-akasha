@@ -1,31 +1,35 @@
-request = require 'superagent'
-md2react = require 'md2react'
+import md2react from 'md2react';
 
 
-EachAnswerComponent = React.createClass(
-  mixins: [Arda.mixin]
+export default EachAnswerComponent = React.createClass({
+  mixins: [Arda.mixin],
 
-  getInitialState: ->
-    # 編集機能をつけるかもしれんのでstateに
-    try
-      renders = md2react @props.content,
-          gfm: true
-          breaks: true
-          tables: true
-      return render: renders
-    catch e
-      console.warn 'mark down parse error', e
-      return render: []
+  getInitialState: () => {
+    // 編集機能をつけるかもしれんのでstateに
+    try {
+      var renders = md2react(this.props.content, {
+        gfm: true,
+        breaks: true,
+        tables: true
+      });
+      return {render: renders};
+    }
+    catch (e) {
+      console.warn('mark down parse error', e);
+      return {render: []};
+    }
+  },
 
-  delete: (ev) ->
-    @dispatch 'answer:delete', @props.id
+  delete: (ev) => {
+    this.dispatch('answer:delete', this.props.id);
+  },
 
-  render: () ->
-    console.log 'each-answer render ', @
-    template = require('./each-answer-view')
-    template @
-)
+  render: () => {
+    console.log('each-answer render ', this);
+    var template = require('./each-answer-view.jsx');
+    return template(this);
+  }
+});
 
 
 
-module.exports = EachAnswerComponent

@@ -1,29 +1,33 @@
-md2react = require 'md2react'
+
+import md2react from 'md2react';
 
 
-###*
-* @param {string} txt
-* @return {Array}
-###
-_renderMd = (txt) ->
-  try
-    md2react txt,
-      gfm: true
-      breaks: true
+/*
+* this.param {string} txt
+* this.return {Array}
+*/
+var _renderMd = (txt) => {
+  try {
+    return md2react(txt, {
+      gfm: true,
+      breaks: true,
       tables: true
-  catch e
-    console.warn 'mark down parse error', e
-    []
+    });
+  }
+  catch (e) {
+    console.warn('mark down parse error', e);
+    return [];
+  }
+};
 
 
 
-module.exports =
-  MarkdownPreviewerComponent = React.createClass
-    mixins: [Arda.mixin]
+export default MarkdownPreviewerComponent = React.createClass({
+    mixins: [Arda.mixin],
 
-    render: () ->
-      console.log 'MarkdownPreviewerComponent render', @props
-      template = require './view'
-      template(_renderMd(@props.content), @props.addtionalClass)
-
-
+    render: () => {
+      console.log('MarkdownPreviewerComponent render', this.props);
+      var template = require('./view.jsx');
+      return template(_renderMd(this.props.content), this.props.addtionalClass);
+    }
+});
