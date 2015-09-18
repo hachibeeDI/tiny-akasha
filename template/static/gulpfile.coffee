@@ -5,7 +5,8 @@ plumber = require 'gulp-plumber'
 
 gulp.task 'default', ['build']
 gulp.task 'build', [
-  'build:bundle'
+  'build:css',
+  'build:js'
 ]
 
 sass = require('gulp-sass')
@@ -43,7 +44,6 @@ B_CONF = {
 makeBabel = () ->
   return through2.obj((file, enc, next) ->
     br = browserify(file.path, B_CONF)
-      .transform 'coffeeify'
       .transform(babelify.configure({stage: 2}))
     br.bundle(
       (err, res) ->
@@ -57,7 +57,7 @@ makeBabel = () ->
 
 # via: https://github.com/substack/node-browserify/issues/1198
 gulp.task 'build:js', ->
-  gulp.src('./src/entry.js')
+  gulp.src('./src/script/entry.js')
     .pipe(makeBabel())
     .pipe(gulp.dest('dist/js/'))
 
@@ -66,4 +66,5 @@ gulp.task 'default', ['build']
 
 
 gulp.task 'watch', ['build'], ->
-  gulp.watch 'src/**/*', ['build:bundle']
+  gulp.watch 'src/style/*.scss', ['build:css']
+  gulp.watch 'src/script/**/*', ['build:js']
