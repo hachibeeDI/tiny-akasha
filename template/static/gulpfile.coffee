@@ -30,6 +30,7 @@ babelify = require 'babelify'
 B_CONF = {
   debug: true
   basedir: './src/script/'
+  extensions: ['.coffee', '.js', '.jsx']
   shim: {
     lodash: {
       path: './node_modules/lodash/index.js'
