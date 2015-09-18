@@ -14,7 +14,7 @@ RUN apt-get update -yq && apt-get upgrade -yq && \
 ADD ./env/supervisord/supervisord.conf /etc/supervisor/
 ADD ./env/supervisord/goji.conf /etc/supervisor/conf.d/
 
-RUN mkdir -p /var/http/tiny-akasha/template/static/dist/; \
+RUN mkdir -p /var/http/tiny-akasha/template/static/dist/js; \
     mkdir -p /var/http/tiny-akasha/template/static/vendor/react; \
     mkdir -p /var/http/tiny-akasha/template/static/vendor/font/octicons
 
@@ -23,7 +23,7 @@ ADD ./src/main /var/http/tiny-akasha/
 ADD ./src/templates/index.html /var/http/tiny-akasha/template/
 
 # deploy frontend files
-ADD ./src/templates/static/dist/bundle.js /var/http/tiny-akasha/template/static/dist/
+ADD ./src/templates/static/dist/js/entry.js /var/http/tiny-akasha/template/static/dist/js/
 ADD ./src/templates/static/dist/style/main.css /var/http/tiny-akasha/template/static/dist/style/
 
 ADD ./src/templates/static/vendor/react/react-with-addons.min.js /var/http/tiny-akasha/template/static/vendor/react/
