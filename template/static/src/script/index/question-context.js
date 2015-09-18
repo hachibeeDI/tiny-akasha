@@ -9,7 +9,7 @@ import Arda from 'arda'
     username: string
     content: string
  */
-export default QuestionComponent = React.createClass({
+var QuestionComponent = React.createClass({
   mixins: [Arda.mixin],
   showQuestion: () => {
     this.dispatch('question:show', this.props.id);
@@ -32,3 +32,5 @@ export default QuestionComponent = React.createClass({
     );
   }
 });
+
+export default QuestionComponent;
