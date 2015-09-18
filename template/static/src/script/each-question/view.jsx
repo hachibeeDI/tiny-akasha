@@ -1,7 +1,7 @@
 var eachAnswer = require("./each-answer-component");
 
 module.exports = function(component) {
-  var answers = component.props.answers.map(function(ans) {
+  const answers = component.props.answers.map(function(ans) {
     return React.createElement(eachAnswer, ans);
   });
   return (

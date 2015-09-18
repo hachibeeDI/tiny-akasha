@@ -2,7 +2,7 @@ import Arda from 'arda'
 import md2react from 'md2react';
 
 
-export default EachAnswerComponent = React.createClass({
+let EachAnswerComponent = React.createClass({
   mixins: [Arda.mixin],
 
   getInitialState: () => {
@@ -33,4 +33,4 @@ export default EachAnswerComponent = React.createClass({
 });
 
 
-
+export default EachAnswerComponent;

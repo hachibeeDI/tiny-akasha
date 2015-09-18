@@ -81,7 +81,7 @@ class PostPanelContext extends Arda.Context {
 /*
  * 投稿用パネルを開くためのボタン的な意義を持つ
 */
-PostFrontComponent = React.createClass({
+let PostFrontComponent = React.createClass({
   mixins: [Arda.mixin, React.addons.LinkedStateMixin],
   getInitialState: () => {
     return {searchWord: ''};

@@ -1,7 +1,7 @@
 import request from 'superagent-bluebird-promise';
 
 
-var loadQuestionData = (id) => {
+let loadQuestionData = (id) => {
   return Promise.all([
     $.get("/api/v1/question/id/#{id}"),
     $.get("/api/v1/question/id/#{id}/answer"),

@@ -2,11 +2,11 @@ import Arda from 'arda'
 import request from 'superagent-bluebird-promise';
 import md2react from 'md2react';
 
-/* 
+/*
  * this.param {string} txt
  * this.return {Array}
  **/
-_renderMd = (txt) => {
+let _renderMd = (txt) => {
   try {
     return md2react(txt, {
       gfm: true,
@@ -21,7 +21,7 @@ _renderMd = (txt) => {
 }
 
 
-EachQuestionComponent = React.createClass({
+let EachQuestionComponent = React.createClass({
   mixins: [Arda.mixin],
 
   getInitialState: () => {

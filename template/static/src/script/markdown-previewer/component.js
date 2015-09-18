@@ -7,7 +7,7 @@ import md2react from 'md2react';
 * this.param {string} txt
 * this.return {Array}
 */
-var _renderMd = (txt) => {
+let _renderMd = (txt) => {
   try {
     return md2react(txt, {
       gfm: true,
@@ -23,12 +23,14 @@ var _renderMd = (txt) => {
 
 
 
-export default MarkdownPreviewerComponent = React.createClass({
-    mixins: [Arda.mixin],
+let MarkdownPreviewerComponent = React.createClass({
+  mixins: [Arda.mixin],
 
-    render: () => {
-      console.log('MarkdownPreviewerComponent render', this.props);
-      var template = require('./view.jsx');
-      return template(_renderMd(this.props.content), this.props.addtionalClass);
-    }
+  render: () => {
+    console.log('MarkdownPreviewerComponent render', this.props);
+    const template = require('./view.jsx');
+    return template(_renderMd(this.props.content), this.props.addtionalClass);
+  }
 });
+
+export default MarkdownPreviewerComponent;
