@@ -9,7 +9,7 @@ let loadQuestionData = (id) => {
 };
 
 
-export default Actions = {
+const Actions = {
   showQuestion: (id) => {
     loadQuestionData(id)
       .then((data) => {
@@ -44,3 +44,4 @@ export default Actions = {
       .promise();
   }
 }
+export default Actions;

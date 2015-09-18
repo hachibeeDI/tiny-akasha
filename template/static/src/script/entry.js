@@ -1,25 +1,23 @@
 'use strict';
 
-import React from 'react'
-import Promise from 'bluebird'
-import Arda from 'arda'
-import $ from 'jquery'
-import _ from 'lodash'
-import Grapnel from 'grapnel'
+import Arda from 'arda';
+import $ from 'jquery';
+import _ from 'lodash';
+import Grapnel from 'grapnel';
 
-import PostContext from './post-question/index'
+import PostContext from './post-question/index.js';
 
-var Routers = {}
+window.Routers = {};
 
 
-window.Navigator = new Grapnel({pushState: true})
+window.Navigator = new Grapnel({pushState: true});
 
 document.addEventListener('DOMContentLoaded', () => {
-  Routers.post = new Arda.Router(Arda.DefaultLayout, document.getElementById('app-post-question'))
-  Routers.post.pushContext(PostContext, {})
+  Routers.post = new Arda.Router(Arda.DefaultLayout, document.getElementById('app-post-question'));
+  Routers.post.pushContext(PostContext, {});
 
-  Routers.main = new Arda.Router(Arda.DefaultLayout, document.getElementById('app-main'))
-  let IndexContext = require('./index/index')
+  Routers.main = new Arda.Router(Arda.DefaultLayout, document.getElementById('app-main'));
+  let IndexContext = require('./index/index.js');
 
   // routing
   (() => {
@@ -28,6 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
        .then((data) => {
           if (!data.error) {
             Routers.main.pushContext(IndexContext, data);
+          }
+          else if (data.error === 'no data') {
+            Routers.main.pushContext(IndexContext, {questions: []});
+          }
+          else {
+            console.error(data.error);
           }
         });
     };
@@ -39,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
       showRoot();
     });
     Navigator.get('/view/question/id/:id', (req) => {
-      Actions = require('./index/actions');
+      const Actions = require('./index/actions');
       Actions.showQuestion(req.params.id);
     });
   })();
