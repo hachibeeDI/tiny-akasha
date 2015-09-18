@@ -26,11 +26,11 @@ $ fab build_server
 $ fab build_assets
 $ cd ./dockerfile
 $ ./init.sh
-$ docker build -t hachibee/tiny-akasha .
+$ cd ../
 ```
 
 and run
 
 ```sh
-$ ./run.sh
+$ docker-compose up -d
 ```
