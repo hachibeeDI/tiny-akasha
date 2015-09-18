@@ -1,3 +1,4 @@
+import Arda from 'arda'
 
 let $c = React.createElement.bind(React);
 

@@ -1,3 +1,5 @@
+import Arda from 'arda'
+
 import IndexContext from '../index/index'
 
 var $c = React.createElement.bind(React)
