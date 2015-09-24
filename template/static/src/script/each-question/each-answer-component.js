@@ -1,5 +1,8 @@
 import Arda from 'arda'
-import md2react from 'md2react';
+
+import Actions from './action.js';
+
+import mdPreview from '../markdown-previewer/component.js';
 
 
 let EachAnswerComponent = React.createClass({
@@ -7,28 +10,29 @@ let EachAnswerComponent = React.createClass({
 
   getInitialState: () => {
     // 編集機能をつけるかもしれんのでstateに
-    try {
-      var renders = md2react(this.props.content, {
-        gfm: true,
-        breaks: true,
-        tables: true
-      });
-      return {render: renders};
-    }
-    catch (e) {
-      console.warn('mark down parse error', e);
-      return {render: []};
-    }
+    return {render: this.props.content};
+  },
+
+  componentDidMount: () => {
+    this.action = new Actions(this);
   },
 
   delete: (ev) => {
-    this.dispatch('answer:delete', this.props.id);
+    this.action.deleteAnswer(this.props.id);
   },
 
   render: () => {
-    console.log('each-answer render ', this);
-    var template = require('./each-answer-view.jsx');
-    return template(this);
+    return (
+      <li key={this.props.id} className="answer">
+        <div className="answer__content" >
+          <h4 className="answer__user" >
+            {this.props.username}
+            <button className="answer__delete close__button" onClick={this.delete.bind(this)}></button>
+          </h4>
+          <mdPreview content={this.state.render} addtionalClass="answer__text"/ >
+        </div>
+      </li>
+    );
   }
 });
 
