@@ -1,70 +1,27 @@
 import Arda from 'arda'
 
-import IndexContext from '../index/index'
+import IndexContext from '../index/index';
+import Component from './component.jsx';
 
-var $c = React.createElement.bind(React)
 
 /*
 * 投稿用パネルの各項目などを管理する
 */
 class PostPanelContext extends Arda.Context {
+  get component() {
+    return Component;
+  }
+
   delegate(subscribe) {
     super.delegate();
     subscribe('questions:reload', () => {
-      $.get('/api/v1/question')
-        .then((data) => {
-          console.log('questions:reload occurd', data);
-          if (data.error) {
-            Routers.main.replaceContext(IndexContext, data);
-          }
+      Routers.main.replaceContext(IndexContext, data)
+        .then((ctx) => {
+          Routers.post.popContext();
         });
     });
-  }
-
-  get component() {
-    return React.createClass({
-      mixins: [Arda.mixin, React.addons.LinkedStateMixin],
-      getInitialState: ()  => {
-        return {name: '', title: '', content: ''};
-      },
-
-      close: (ev) => {
-        Routers.post.popContext()
-      },
-
-      postQuestion: (ev) => {
-        ev.preventDefault();
-        $.post('/api/v1/question', {
-          'title': this.state.title,
-          'name': this.state.name,
-          'content': this.state.content
-        })
-          .then((data) => {
-            console.log('/api/v1/question returns', data);
-            this.dispatch('questions:reload');
-          })
-          .then((data) => {
-            Routers.post.popContext();
-          });
-        },
-      render: () => {
-        let mdPreview = require('../markdown-previewer/component')
-        let post__panel =
-          $c('div', {className: 'post-panel', },
-            $c('button', {onClick: this.close, className: "close__button"}, ''),
-            $c('form', {className: 'post-panel__form', onSubmit: this.postQuestion},
-              $c('label', {className: 'label--row'},
-                  'タイトル', $c('input', {type: 'text', name: 'title', valueLink: this.linkState('title')})),
-              $c('label', {className: 'label--row'},
-                  '名前', $c('input', {type: 'text', name: 'name', valueLink: this.linkState('name')})),
-              $c('label', {className: 'label--row'},
-                  '内容', $c('textarea', {className: 'post-panel__form__content', name: 'content', valueLink: this.linkState('content')})),
-              $c('input', {type: 'submit', value: '投稿', }),
-              $c(mdPreview, {addtionalClass: 'post-panel__preview', content: this.state.content})
-            )
-        );
-        return $c('div', { className: 'post-panel--dark__cover' }, post__panel);
-      }
+    subscribe('questions:close', () => {
+      Routers.post.popContext();
     });
   }
 
@@ -77,6 +34,8 @@ class PostPanelContext extends Arda.Context {
   }
 }
 
+
+var $c = React.createElement.bind(React);
 
 /*
  * 投稿用パネルを開くためのボタン的な意義を持つ
@@ -121,14 +80,14 @@ let PostFrontComponent = React.createClass({
 
 
 export default class PostContext extends Arda.Context {
+  get component() {return PostFrontComponent; }
+
   delegate(subscribe) {
     super.delegate();
     subscribe('search:questions', (questions) => {
       Routers.main.pushContext(IndexContext, {questions: questions});
     });
   }
-
-  get component() {return PostFrontComponent; }
 
   initState(props) {
     return {};
