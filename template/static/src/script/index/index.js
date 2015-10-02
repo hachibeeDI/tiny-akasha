@@ -34,7 +34,7 @@ export default class IndexContext extends Arda.Context {
     });
 
     subscribe('question:show', (id) => {
-      Navigator.navigate("/view/question/id/#{id}");
+      Navigator.navigate(`/view/question/id/${id}`);
     });
 
     subscribe('question:delete', (id) => {

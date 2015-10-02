@@ -8,8 +8,6 @@ import Grapnel from 'grapnel';
 import PostContext from './post-question/index.js';
 
 window.Routers = {};
-
-
 window.Navigator = new Grapnel({pushState: true});
 
 document.addEventListener('DOMContentLoaded', () => {

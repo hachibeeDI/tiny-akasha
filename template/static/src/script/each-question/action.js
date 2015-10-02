@@ -6,8 +6,8 @@ import ArdaActionCreator from '../utils/action.js';
 
 let loadQuestionData = (id) => {
   return Promise.all([
-    $.get("/api/v1/question/id/#{id}"),
-    $.get("/api/v1/question/id/#{id}/answer"),
+    $.get(`/api/v1/question/id/${id}`),
+    $.get(`/api/v1/question/id/${id}/answer`),
   ]);
 };
 
