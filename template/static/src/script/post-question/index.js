@@ -43,15 +43,15 @@ var $c = React.createElement.bind(React);
 */
 let PostFrontComponent = React.createClass({
   mixins: [Arda.mixin, React.addons.LinkedStateMixin],
-  getInitialState: () => {
+  getInitialState() {
     return {searchWord: ''};
   },
 
-  showPostPanel: () => {
+  showPostPanel() {
     Routers.post.pushContext(PostPanelContext, {});
   },
 
-  seachQuestionsByWord: (ev) => {
+  seachQuestionsByWord(ev) {
     // TODO: submitイベントを捕まえたほうが良いかも
     if (ev.keyCode !== 13) {
       return;
@@ -69,14 +69,14 @@ let PostFrontComponent = React.createClass({
       });
   },
 
-  render: () => {
+  render() {
     return $c('nav', {className: 'controll-panel'},
-      $c('button', {onClick: this.showPostPanel, className: 'button__open-post octicon-pencil'}),
+      $c('button', {onClick: this.showPostPanel.bind(this), className: 'button__open-post octicon-pencil'}),
       $c('input', {
         className: 'search-box',
         type: 'text',
         placeholder: 'search',
-        onKeyDown: this.seachQuestionsByWord,
+        onKeyDown: this.seachQuestionsByWord.bind(this),
         valueLink: this.linkState('searchWord'),
       })
     )

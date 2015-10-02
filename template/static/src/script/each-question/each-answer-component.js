@@ -8,20 +8,20 @@ import mdPreview from '../markdown-previewer/component.js';
 let EachAnswerComponent = React.createClass({
   mixins: [Arda.mixin],
 
-  getInitialState: () => {
+  getInitialState() {
     // 編集機能をつけるかもしれんのでstateに
     return {render: this.props.content};
   },
 
-  componentDidMount: () => {
+  componentDidMount() {
     this.action = new Actions(this);
   },
 
-  delete: (ev) => {
+  delete(ev) {
     this.action.deleteAnswer(this.props.id);
   },
 
-  render: () => {
+  render() {
     return (
       <li key={this.props.id} className="answer">
         <div className="answer__content" >

@@ -3,30 +3,30 @@ import Actions from './action.js';
 let EachQuestionComponent = React.createClass({
   mixins: [Arda.mixin],
 
-  getInitialState: () => {
+  getInitialState(){
     return {preview: ''};
   },
 
-  componentDidMount: () => {
+  componentDidMount() {
     this.action = new Actions(this);
   },
 
-  goBack: (ev) => {
+  goBack(ev) {
     this.action.goBack();
   },
 
-  onHandleAnswerFormSubmit: (ev) => {
+  onHandleAnswerFormSubmit(ev) {
     ev.preventDefault();
     let username = React.findDOMNode(this.refs.form__user);
     let content = React.findDOMNode(this.refs.form__content);
     this.action.sendAnswer(username, content);
   },
 
-  renderPreviewMd: (ev) => {
+  renderPreviewMd(ev) {
     this.setState({preview: this.refs.form__content.getDOMNode().value});
   },
 
-  render: () => {
+  render() {
     console.log('each question component render', this.props);
     let template = require('./view.jsx');
     return template(this);

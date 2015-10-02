@@ -9,7 +9,7 @@ import actions from './actions';
 var IndexComponent = React.createClass({
   mixins: [Arda.mixin],
 
-  render: () => {
+  render() {
     return $c('div', {},
       $c('ul', {className: 'questions__ul'},
         this.props.questions.map((q) => {

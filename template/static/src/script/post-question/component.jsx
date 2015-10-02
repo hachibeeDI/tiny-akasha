@@ -6,15 +6,15 @@ import Arda from 'arda';
 
 const Component = React.createClass({
   mixins: [Arda.mixin, React.addons.LinkedStateMixin],
-  getInitialState: ()  => {
+  getInitialState() {
     return {name: '', title: '', content: ''};
   },
 
-  close: (ev) => {
+  close(ev) {
     this.dispatch('questions:close');
   },
 
-  reloadQuestion: () => {
+  reloadQuestion() {
     axios
       .get('/api/v1/question')
       .then((res) => {
@@ -26,7 +26,7 @@ const Component = React.createClass({
       });
   },
 
-  postQuestion: (ev) => {
+  postQuestion(ev) {
     ev.preventDefault();
     axios
       .post('/api/v1/question', {
@@ -40,7 +40,7 @@ const Component = React.createClass({
       });
   },
 
-  render: () => {
+  render() {
     let mdPreview = require('../markdown-previewer/component');
     let post__panel = (
       <div className='post-panel'>

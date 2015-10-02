@@ -26,7 +26,7 @@ let _renderMd = (txt) => {
 let MarkdownPreviewerComponent = React.createClass({
   mixins: [Arda.mixin],
 
-  render: () => {
+  render() {
     console.log('MarkdownPreviewerComponent render', this.props);
     const template = require('./view.jsx');
     return template(_renderMd(this.props.content), this.props.addtionalClass);

@@ -34,19 +34,19 @@ class QuestionAction extends ArdaActionCreator {
  */
 const QuestionComponent = React.createClass({
   mixins: [Arda.mixin],
-  componentDidMount: () => {
+  componentDidMount() {
     this.action = new QuestionAction(this);
   },
 
-  onInnerClick: () => {
+  onInnerClick() {
     this.action.showQuestion(this.props.id);
   },
 
-  onDeleteClick: () => {
+  onDeleteClick() {
     this.action.deleteQuestion(this.props.id);
   },
 
-  render: () => {
+  render() {
     // TODO: 削除ボタンのデザインや仕様は要検討
     return (
       <li className="question" key={this.props.id}>
