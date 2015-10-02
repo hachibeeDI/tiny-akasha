@@ -1,5 +1,5 @@
 
-import Arda from 'arda'
+import Arda from 'arda';
 
 import ArdaActionCreator from '../utils/action.js';
 
@@ -10,7 +10,7 @@ class QuestionAction extends ArdaActionCreator {
     this.dispatch('question:show', id);
   }
 
-  deleteQuestion: (id) => {
+  deleteQuestion(id) {
     this.dispatch('question:delete', id);
     request
       .del(`/api/v1/question/id/${id}`)
@@ -33,15 +33,15 @@ const QuestionComponent = React.createClass({
   mixins: [Arda.mixin],
   componentDidMount: () => {
     this.action = new QuestionAction(this);
-  }
+  },
 
   onInnerClick: () => {
     this.action.showQuestion(this.props.id);
-  }
+  },
 
   onDeleteClick: () => {
     this.action.deleteQuestion(this.props.id);
-  }
+  },
 
   render: () => {
     // TODO: 削除ボタンのデザインや仕様は要検討

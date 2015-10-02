@@ -11,7 +11,7 @@ let loadQuestionData = (id) => {
 };
 
 
-export default Actions extends ArdaActionCreator {
+export default class Actions extends ArdaActionCreator {
   showQuestion(id) {
     loadQuestionData(id)
       .then((data) => {

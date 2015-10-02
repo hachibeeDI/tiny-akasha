@@ -1,7 +1,7 @@
 
 import request from 'superagent';
 
-import Arda from 'arda':
+import Arda from 'arda';
 
 const Component = React.createClass({
   mixins: [Arda.mixin, React.addons.LinkedStateMixin],
