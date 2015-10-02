@@ -30,7 +30,9 @@ func Create(c web.C, w http.ResponseWriter, r *http.Request) {
 	if err := question.Init(title, name, content).Insert(db); err != nil {
 		panic(err)
 	}
-	fmt.Fprintf(w, "create faq success !")
+	// TODO: return created id
+	w.WriteHeader(http.StatusCreated)
+	helper.RenderJson(map[string]interface{}{"status": "success"}, w)
 }
 
 func Get(c web.C, w http.ResponseWriter, r *http.Request) {
@@ -38,7 +40,7 @@ func Get(c web.C, w http.ResponseWriter, r *http.Request) {
 	db := entity.Db
 	ques := question.SelectAll(db)
 	if ques == nil {
-		helper.RenderJson(map[string]interface{}{"error": "no data"}, w)
+		w.WriteHeader(http.StatusNoContent)
 		return
 	}
 	obj := map[string]interface{}{"questions": ques}
