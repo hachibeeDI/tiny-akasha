@@ -1,5 +1,6 @@
 
 import Arda from 'arda';
+import axios from 'axios';
 
 import ArdaActionCreator from '../utils/action.js';
 
@@ -12,11 +13,13 @@ class QuestionAction extends ArdaActionCreator {
 
   deleteQuestion(id) {
     this.dispatch('question:delete', id);
-    request
-      .del(`/api/v1/question/id/${id}`)
-      .end((err, res) => {
-        if (err) { console.error(err); return; }
+    axios
+      .delete(`/api/v1/question/id/${id}`)
+      .then((res) => {
         this.dispatch('question:delete', id);
+      })
+      .catch((err) => {
+        console.error(err);
       });
   }
 }

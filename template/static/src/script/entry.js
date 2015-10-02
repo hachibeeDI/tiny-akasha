@@ -1,7 +1,7 @@
 'use strict';
 
 import Arda from 'arda';
-import $ from 'jquery';
+import axios from 'axios';
 import _ from 'lodash';
 import Grapnel from 'grapnel';
 
@@ -20,8 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // routing
   (() => {
     var showRoot = () => {
-      $.get('/api/v1/question')
-       .then((data) => {
+      axios
+        .get('/api/v1/question')
+        .then((data) => {
           if (!data.error) {
             Routers.main.pushContext(IndexContext, data);
           }

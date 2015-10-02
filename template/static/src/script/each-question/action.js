@@ -1,13 +1,13 @@
 
-import request from 'superagent';
+import axios from 'axios';
 
 import ArdaActionCreator from '../utils/action.js';
 
 
 let loadQuestionData = (id) => {
-  return Promise.all([
-    $.get(`/api/v1/question/id/${id}`),
-    $.get(`/api/v1/question/id/${id}/answer`),
+  return axios.all([
+    axios.get(`/api/v1/question/id/${id}`),
+    axios.get(`/api/v1/question/id/${id}/answer`),
   ]);
 };
 
@@ -20,10 +20,8 @@ export default class Actions extends ArdaActionCreator {
   sendAnswer(username, content) {
     // FIXME: DOMいじってるのイクない
     if (username == '' || content == '') { return ; }
-    request
-      .post(`/api/v1/question/id/${this.props.id}/answer`)
-      .send({name: username.value, content: content.value})
-      .set('Accept', 'application/json')
+    axios
+      .post(`/api/v1/question/id/${this.props.id}/answer`, {name: username.value, content: content.value})
       .then((data) => {
         console.log('question created');
         username.value = '';
@@ -48,20 +46,18 @@ export default class Actions extends ArdaActionCreator {
   }
 
   deleteAnswer(answerId) {
-    request
-      .del(`/api/v1/answer/id/${id}`)
-      .end((err, res) => {
-        if (err) { console.error(err); return ; }
-
+    axios
+      .delete(`/api/v1/answer/id/${id}`)
+      .then((res) => {
         console.log(res);
-        loadQuestionData(id)
+        return loadQuestionData(id)
           .then((data) => {
             console.log('question:reload occurd', data);
             this.dispatch('answer:delete', _.merge(data[0], data[1]));
-          })
-          .catch((error) => {
-            console.error('delete anser in load question', error);
           });
+      })
+      .catch((err) => {
+        console.error(err);
       });
   }
 }

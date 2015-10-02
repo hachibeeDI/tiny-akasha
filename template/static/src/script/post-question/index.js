@@ -1,4 +1,5 @@
-import Arda from 'arda'
+import Arda from 'arda';
+import axios from 'axios';
 
 import IndexContext from '../index/index';
 import Component from './component.jsx';
@@ -55,12 +56,16 @@ let PostFrontComponent = React.createClass({
     if (ev.keyCode !== 13) {
       return;
     }
-    $.post('/api/v1/question/search', {'word': this.state.searchWord})
-     .done((data) => {
-       console.log('/api/v1/question/search', data);
-       if (!data.error) {
-         this.dispatch('search:questions', data['questions']);
-       }
+    axios
+      .post('/api/v1/question/search', {'word': this.state.searchWord})
+      .then((data) => {
+        console.log('/api/v1/question/search', data);
+        if (!data.error) {
+          this.dispatch('search:questions', data['questions']);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
       });
   },
 

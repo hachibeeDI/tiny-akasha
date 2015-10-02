@@ -1,5 +1,4 @@
 import Arda from 'arda';
-import request from 'superagent-bluebird-promise';
 import md2react from 'md2react';
 
 import EachQuestionComponent from './component.js';

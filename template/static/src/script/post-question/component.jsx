@@ -1,7 +1,8 @@
 
-import request from 'superagent';
+import axios from 'axios';
 
 import Arda from 'arda';
+
 
 const Component = React.createClass({
   mixins: [Arda.mixin, React.addons.LinkedStateMixin],
@@ -14,26 +15,29 @@ const Component = React.createClass({
   },
 
   reloadQuestion: () => {
-    request
+    axios
       .get('/api/v1/question')
-      .end((err, res) => {
-        console.log('questions:reload occurd', res.text);
+      .then((res) => {
         if (data.error) { console.error(data.error); return; }
         this.dispatch('questions:reload');
+      })
+      .catch((err) => {
+        console.log('questions:reload occurd', err.message);
       });
   },
 
   postQuestion: (ev) => {
     ev.preventDefault();
-    $.post('/api/v1/question', {
-      'title': this.state.title,
-      'name': this.state.name,
-      'content': this.state.content
-    })
-    .then((data) => {
-      console.log('/api/v1/question returns', data);
-      this.reloadQuestion();
-    });
+    axios
+      .post('/api/v1/question', {
+        'title': this.state.title,
+        'name': this.state.name,
+        'content': this.state.content
+      })
+      .then((data) => {
+        console.log('/api/v1/question returns', data);
+        this.reloadQuestion();
+      });
   },
 
   render: () => {

@@ -1,12 +1,12 @@
-import request from 'superagent';
+import axios from 'axios';
 
 import ArdaActionCreator from '../utils/action.js';
 
 
 let loadQuestionData = (id) => {
   return Promise.all([
-    $.get(`/api/v1/question/id/${id}`),
-    $.get(`/api/v1/question/id/${id}/answer`),
+    axios.get(`/api/v1/question/id/${id}`),
+    axios.get(`/api/v1/question/id/${id}/answer`),
   ]);
 };
 
@@ -35,11 +35,13 @@ export default class Actions extends ArdaActionCreator {
   }
 
   deleteQuestion(id) {
-    request
-      .del(`/api/v1/question/id/${id}`)
-      .end((err, res) => {
-        if (err) { console.error(err); return; }
+    axios
+      .delete(`/api/v1/question/id/${id}`)
+      .then((res) => {
         this.dispatch('question:delete', id);
+      })
+      .catch((err) => {
+        console.error(err);
       });
   }
 }
