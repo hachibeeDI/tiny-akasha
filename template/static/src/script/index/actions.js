@@ -11,39 +11,35 @@ let loadQuestionData = (id) => {
 };
 
 
-const Actions = {
-  showQuestion: (id) => {
+export default Actions extends ArdaActionCreator {
+  showQuestion(id) {
     loadQuestionData(id)
       .then((data) => {
         console.log('question:show occurd', data);
-        Routers.main.pushContext(
-          require('../each-question/context'),
-          _.merge(data[0], data[1])
-        );
+        this.dispatch('question:loaded', _.merge(data[0], data[1]));
       })
       .catch((error) => {
         console.error('each question', error);
       });
-  },
+  }
 
-  reloadQuestion: (id) => {
+  reloadQuestion(id) {
     loadQuestionData(id)
       .then((data) => {
         console.log('question:reload occurd', data);
-        Routers.main.replaceContext(
-          require('../each-question/context'),
-          _.merge(data[0], data[1])
-        );
+        this.dispatch('question:reload', _.merge(data[0], data[1]));
       })
       .catch((error) => {
         console.error('each question', error);
       });
-  },
+  }
 
-  deleteQuestion: (id) => {
-    return request
-      .del("/api/v1/question/id/#{id}")
-      .promise();
+  deleteQuestion(id) {
+    request
+      .del(`/api/v1/question/id/${id}`)
+      .end((err, res) => {
+        if (err) { console.error(err); return; }
+        this.dispatch('question:delete', id);
+      });
   }
 }
-export default Actions;

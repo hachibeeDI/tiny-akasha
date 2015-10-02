@@ -2,7 +2,8 @@ import Arda from 'arda'
 
 let $c = React.createElement.bind(React);
 
-import QuestionContext from './question-context';
+import QuestionComponent from './question-context';
+import actions from './actions';
 
 
 var IndexComponent = React.createClass({
@@ -13,7 +14,7 @@ var IndexComponent = React.createClass({
       $c('ul', {className: 'questions__ul'},
         this.props.questions.map((q) => {
           q['key'] = q['id'];
-          return $c(QuestionContext, q);
+          return $c(QuestionComponent, q);
         })
       )
     );
@@ -28,9 +29,22 @@ export default class IndexContext extends Arda.Context {
 
   delegate(subscribe) {
     super.delegate();
-    var actions = require('./actions');
     subscribe('show:questions', (questions) => {
       this.update((s) => {questions: questions});
+    });
+
+    subscribe('question:loaded', (datas) => {
+      Routers.main.pushContext(
+        require('../each-question/context'),
+        datas
+      );
+    });
+
+    subscribe('question:reload', (datas) => {
+      Routers.main.replaceContext(
+        require('../each-question/context'),
+        datas
+      );
     });
 
     subscribe('question:show', (id) => {
@@ -38,17 +52,10 @@ export default class IndexContext extends Arda.Context {
     });
 
     subscribe('question:delete', (id) => {
-      actions.deleteQuestion(id)
-        .then((data) => {
-          this.update((s) => {
-            let qs = s.questions.filter((q) => { q.id != id});
-            return {questions: qs};
-          });
-        })
-        .catch((err) => {
-          console.log('question:delete has error')
-          console.error(err)
-        });
+      this.update((s) => {
+        let qs = s.questions.filter((q) => { q.id != id});
+        return {questions: qs};
+      });
     });
   }
 
