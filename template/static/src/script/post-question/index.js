@@ -4,6 +4,8 @@ import axios from 'axios';
 import IndexContext from '../index/index';
 import Component from './component.jsx';
 
+import {Routers} from '../_router.js';
+
 
 /*
 * 投稿用パネルの各項目などを管理する
@@ -48,6 +50,7 @@ let PostFrontComponent = React.createClass({
   },
 
   showPostPanel() {
+    console.log('showPostPanel exec');
     Routers.post.pushContext(PostPanelContext, {});
   },
 
@@ -70,13 +73,14 @@ let PostFrontComponent = React.createClass({
   },
 
   render() {
+    console.log(this);
     return $c('nav', {className: 'controll-panel'},
-      $c('button', {onClick: this.showPostPanel.bind(this), className: 'button__open-post octicon-pencil'}),
+      $c('button', {onClick: this.showPostPanel, className: 'button__open-post octicon-pencil'}),
       $c('input', {
         className: 'search-box',
         type: 'text',
         placeholder: 'search',
-        onKeyDown: this.seachQuestionsByWord.bind(this),
+        onKeyDown: this.seachQuestionsByWord,
         valueLink: this.linkState('searchWord'),
       })
     )

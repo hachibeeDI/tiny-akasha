@@ -41,6 +41,7 @@ const Component = React.createClass({
   },
 
   render() {
+    console.log('post component render');
     let mdPreview = require('../markdown-previewer/component');
     let post__panel = (
       <div className='post-panel'>

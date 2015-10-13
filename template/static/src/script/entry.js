@@ -1,20 +1,14 @@
 'use strict';
 
-import Arda from 'arda';
 import axios from 'axios';
 import _ from 'lodash';
-import Grapnel from 'grapnel';
 
-import PostContext from './post-question/index.js';
+import {Routers, Navigator} from './_router.js';
+global.Routers = Routers;
+global.Navigator = Navigator;
 
-window.Routers = {};
-window.Navigator = new Grapnel({pushState: true});
 
 document.addEventListener('DOMContentLoaded', () => {
-  Routers.post = new Arda.Router(Arda.DefaultLayout, document.getElementById('app-post-question'));
-  Routers.post.pushContext(PostContext, {});
-
-  Routers.main = new Arda.Router(Arda.DefaultLayout, document.getElementById('app-main'));
   let IndexContext = require('./index/index.js');
 
   // routing

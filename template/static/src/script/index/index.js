@@ -2,6 +2,7 @@ import Arda from 'arda'
 
 let $c = React.createElement.bind(React);
 
+import {Routers} from '../_router.js';
 import QuestionComponent from './question-context';
 import actions from './actions';
 
