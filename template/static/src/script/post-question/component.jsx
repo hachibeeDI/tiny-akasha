@@ -67,3 +67,4 @@ const Component = React.createClass({
     return (<div className='post-panel--dark__cover'><post__panel /></div>);
   }
 });
+export default Component;
