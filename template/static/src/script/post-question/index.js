@@ -73,7 +73,6 @@ let PostFrontComponent = React.createClass({
   },
 
   render() {
-    console.log(this);
     return $c('nav', {className: 'controll-panel'},
       $c('button', {onClick: this.showPostPanel, className: 'button__open-post octicon-pencil'}),
       $c('input', {

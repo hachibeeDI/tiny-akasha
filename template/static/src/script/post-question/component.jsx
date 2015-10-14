@@ -22,7 +22,8 @@ const Component = React.createClass({
         this.dispatch('questions:reload');
       })
       .catch((err) => {
-        console.log('questions:reload occurd', err.message);
+        // TODO: emit error
+        console.error('questions:reload occurd', err.message);
       });
   },
 
@@ -41,7 +42,7 @@ const Component = React.createClass({
   },
 
   render() {
-    console.log('post component render');
+    // console.log('post component render');
     let MdPreview = require('../markdown-previewer/component');
     return (
       <div className='post-panel--dark__cover'>
