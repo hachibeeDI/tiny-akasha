@@ -42,29 +42,30 @@ const Component = React.createClass({
 
   render() {
     console.log('post component render');
-    let mdPreview = require('../markdown-previewer/component');
-    let post__panel = (
-      <div className='post-panel'>
-        <button onClick={this.close.bind(this)} className="close__button"></button>
-        <form className='post-panel__form' onSubmit={this.postQuestion.bind(this)}>
-          <label className='label--row'>
-            'タイトル'
-            <input type='text' name='title' valueLink={this.linkState('title')} />
-          </label>
-          <label className='label--row'>
-            '名前'
-            <input type='text' name='name' valueLink={this.linkState('name')} />
-          </label>
-          <label className='label--row'>
-            '内容'
-            <textarea className='post-panel__form__content' name='content' valueLink={this.linkState('content')} />
-          </label>
-          <input type='submit' value='投稿' />
-          <mdPreview addtionalClass='post-panel__preview' content={this.state.content} />
-        </form>
+    let MdPreview = require('../markdown-previewer/component');
+    return (
+      <div className='post-panel--dark__cover'>
+        <div className='post-panel'>
+          <button onClick={this.close} className="close__button"></button>
+          <form className='post-panel__form' onSubmit={this.postQuestion}>
+            <label className='label--row'>
+              タイトル
+              <input type='text' name='title' valueLink={this.linkState('title')} />
+            </label>
+            <label className='label--row'>
+              名前
+              <input type='text' name='name' valueLink={this.linkState('name')} />
+            </label>
+            <label className='label--row'>
+              内容
+              <textarea className='post-panel__form__content' name='content' valueLink={this.linkState('content')} />
+            </label>
+            <input type='submit' value='投稿' />
+            <MdPreview addtionalClass='post-panel__preview' content={this.state.content} />
+          </form>
+        </div>
       </div>
     );
-    return (<div className='post-panel--dark__cover'><post__panel /></div>);
   }
 });
 export default Component;
