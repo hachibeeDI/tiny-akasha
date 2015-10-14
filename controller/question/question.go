@@ -3,7 +3,9 @@ package question
 // TODO: entityを直接読んでるのをどうにかアレする
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 
@@ -15,19 +17,26 @@ import (
 	"github.com/hachibeeDI/tiny-akasha/view/helper"
 )
 
+type NewArticleBody struct {
+	Title   string `json:title`
+	Name    string `json:name`
+	Content string `json:content`
+}
+
 // params:
 //    title, name, content
 func Create(c web.C, w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("Create called")
-	title := r.FormValue("title")
-	name := r.FormValue("name")
-	content := r.FormValue("content")
-	if len(title) < 0 || len(content) < 0 {
+	body, _ := ioutil.ReadAll(r.Body)
+	var posted NewArticleBody
+	json.Unmarshal(body, &posted)
+	fmt.Println("Create called")
+	fmt.Println(string(body))
+	if len(posted.Title) < 0 || len(posted.Content) < 0 {
 		helper.RenderJson(map[string]interface{}{"error": "empty data"}, w)
 		return
 	}
 	db := entity.Db
-	if err := question.Init(title, name, content).Insert(db); err != nil {
+	if err := question.Init(posted.Title, posted.Name, posted.Content).Insert(db); err != nil {
 		panic(err)
 	}
 	// TODO: return created id
