@@ -47,14 +47,17 @@ const QuestionComponent = React.createClass({
   },
 
   render() {
+    console.log('QuestionComponent render', this);
     // TODO: 削除ボタンのデザインや仕様は要検討
     return (
       <li className="question" key={this.props.id}>
-        <div className='question__inner' onClick={this.onInnerClick.bind(this)}>
-          <h3 className='question__title'>this.props.title</h3>
-          <p className='question__digest'>this.props.content</p>
+        <div className='question__inner' onClick={this.onInnerClick}>
+          <h3 className='question__title'>{this.props.title}</h3>
+          <p className='question__digest'>{this.props.content}</p>
         </div>
-        <button className='question__delete-button' onClick={this.onDeleteClick.bind(this)}> 'この質問を削除する'</button>
+        <button className='question__delete-button' onClick={this.onDeleteClick}>
+          この質問を削除する
+        </button>
       </li>
     );
   }
