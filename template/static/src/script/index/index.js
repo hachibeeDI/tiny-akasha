@@ -23,6 +23,9 @@ var IndexComponent = React.createClass({
 });
 
 
+import EachQuestionContext from '../each-question/context';
+
+
 export default class IndexContext extends Arda.Context {
   get component() {
     return IndexComponent;
@@ -36,14 +39,14 @@ export default class IndexContext extends Arda.Context {
 
     subscribe('question:loaded', (datas) => {
       Routers.main.pushContext(
-        require('../each-question/context'),
+        EachQuestionContext,
         datas
       );
     });
 
     subscribe('question:reload', (datas) => {
       Routers.main.replaceContext(
-        require('../each-question/context'),
+        EachQuestionContext,
         datas
       );
     });

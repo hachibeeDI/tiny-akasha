@@ -8,8 +8,10 @@ global.Routers = Routers;
 global.Navigator = Navigator;
 
 
+import IndexContext from './index/index.js';
+
+
 document.addEventListener('DOMContentLoaded', () => {
-  let IndexContext = require('./index/index.js');
 
   // routing
   (() => {
