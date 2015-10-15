@@ -27,7 +27,7 @@ let EachAnswerComponent = React.createClass({
         <div className="answer__content" >
           <h4 className="answer__user" >
             {this.props.username}
-            <button className="answer__delete close__button" onClick={this.delete.bind(this)}></button>
+            <button className="answer__delete close__button" onClick={this.delete}></button>
           </h4>
           <mdPreview content={this.state.render} addtionalClass="answer__text"/ >
         </div>
