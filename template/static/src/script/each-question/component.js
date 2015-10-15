@@ -1,3 +1,6 @@
+
+import Arda from 'arda'
+
 import Actions from './action.js';
 
 let EachQuestionComponent = React.createClass({
