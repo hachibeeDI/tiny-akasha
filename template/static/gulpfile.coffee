@@ -32,10 +32,6 @@ B_CONF = {
   basedir: './src/script/'
   extensions: ['.coffee', '.js', '.jsx']
   shim: {
-    lodash: {
-      path: './node_modules/lodash/index.js'
-      exports: 'lodash'
-    }
     react: {
       path: './node_modules/react/dist/react-with-addons.js'
       exports: 'react'

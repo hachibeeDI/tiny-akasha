@@ -1,5 +1,6 @@
 
 import axios from 'axios';
+import merge from 'lodash/object/merge';
 
 import ArdaActionCreator from '../utils/action.js';
 
@@ -38,7 +39,7 @@ export default class Actions extends ArdaActionCreator {
     loadQuestionData(id)
       .then((data) => {
         console.log('question:reload occurd', data);
-        this.dispatch('question:reload', _.merge(data[0], data[1]));
+        this.dispatch('question:reload', merge(data[0], data[1]));
       })
       .catch((error) => {
         console.error('each question', error);
@@ -53,7 +54,7 @@ export default class Actions extends ArdaActionCreator {
         return loadQuestionData(id)
           .then((data) => {
             console.log('question:reload occurd', data);
-            this.dispatch('answer:delete', _.merge(data[0], data[1]));
+            this.dispatch('answer:delete', merge(data[0], data[1]));
           });
       })
       .catch((err) => {
