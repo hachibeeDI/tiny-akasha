@@ -9,7 +9,8 @@ let loadQuestionData = (id) => {
   return axios.all([
     axios.get(`/api/v1/question/id/${id}`),
     axios.get(`/api/v1/question/id/${id}/answer`),
-  ]);
+  ])
+  .then((res) => { return merge(res[0].data, res[1].data); });
 };
 
 
@@ -23,7 +24,7 @@ export default class Actions extends ArdaActionCreator {
     if (username == '' || content == '') { return ; }
     axios
       .post(`/api/v1/question/id/${this.props.id}/answer`, {name: username.value, content: content.value})
-      .then((data) => {
+      .then((res) => {
         console.log('question created');
         username.value = '';
         content.value = '';
@@ -39,7 +40,7 @@ export default class Actions extends ArdaActionCreator {
     loadQuestionData(id)
       .then((data) => {
         console.log('question:reload occurd', data);
-        this.dispatch('question:reload', merge(data[0], data[1]));
+        this.dispatch('question:reload', data);
       })
       .catch((error) => {
         console.error('each question', error);
@@ -49,12 +50,12 @@ export default class Actions extends ArdaActionCreator {
   deleteAnswer(answerId) {
     axios
       .delete(`/api/v1/answer/id/${id}`)
-      .then((res) => {
-        console.log(res);
+      .then((deleteRes) => {
+        console.log(deleteRes);
         return loadQuestionData(id)
-          .then((data) => {
-            console.log('question:reload occurd', data);
-            this.dispatch('answer:delete', merge(data[0], data[1]));
+          .then((loadData) => {
+            console.log('question:reload occurd', loadData);
+            this.dispatch('answer:delete', loadData);
           });
       })
       .catch((err) => {

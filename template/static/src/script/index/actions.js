@@ -8,7 +8,8 @@ let loadQuestionData = (id) => {
   return Promise.all([
     axios.get(`/api/v1/question/id/${id}`),
     axios.get(`/api/v1/question/id/${id}/answer`),
-  ]);
+  ])
+  .then((res) => { return merge(res[0].data, res[1].data); });
 };
 
 
@@ -17,7 +18,7 @@ export default class Actions extends ArdaActionCreator {
     loadQuestionData(id)
       .then((data) => {
         console.log('question:show occurd', data);
-        this.dispatch('question:loaded', merge(data[0], data[1]));
+        this.dispatch('question:loaded', data);
       })
       .catch((error) => {
         console.error('each question', error);
@@ -28,7 +29,7 @@ export default class Actions extends ArdaActionCreator {
     loadQuestionData(id)
       .then((data) => {
         console.log('question:reload occurd', data);
-        this.dispatch('question:reload', merge(data[0], data[1]));
+        this.dispatch('question:reload', data);
       })
       .catch((error) => {
         console.error('each question', error);
