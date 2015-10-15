@@ -34,7 +34,7 @@ class QuestionAction extends ArdaActionCreator {
  */
 const QuestionComponent = React.createClass({
   mixins: [Arda.mixin],
-  componentDidMount() {
+  componentWillMount() {
     this.action = new QuestionAction(this);
   },
 

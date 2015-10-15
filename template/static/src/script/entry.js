@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     var showRoot = () => {
       axios
         .get('/api/v1/question')
-        .then((data) => {
+        .then((res) => {
+          console.log('init index', res);
+          let data = res.data;
           if (!data.error) {
             Routers.main.pushContext(IndexContext, data);
           }
