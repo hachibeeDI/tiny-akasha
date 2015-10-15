@@ -1,5 +1,7 @@
 'use strict';
 
+import {EventEmitter} from 'events';
+
 import axios from 'axios';
 import _ from 'lodash';
 
@@ -9,6 +11,7 @@ global.Navigator = Navigator;
 
 
 import IndexContext from './index/index.js';
+import EachQuestionContext from './each-question/context.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -40,8 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
       showRoot();
     });
     Navigator.get('/view/question/id/:id', (req) => {
-      const Actions = require('./index/actions');
-      Actions.showQuestion(req.params.id);
+      // TODO: このdispatcherどうしよう
+      const dispatcher = new EventEmitter();
+      dispatcher.on('question:loaded', (data) => {
+        Routers.main.pushContext(EachQuestionContext, data);
+      });
+      dispatcher.dispatch = dispatcher.emit.bind(dispatcher);
+      const IndexActions = require('./index/actions');
+      const act = new IndexActions(dispatcher);
+      act.showQuestion(req.params.id);
     });
   })();
 });
