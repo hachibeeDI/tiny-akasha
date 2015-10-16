@@ -19,16 +19,12 @@ export default class Actions extends ArdaActionCreator {
     this.dispatch('back');
   }
 
-  sendAnswer(username, content) {
-    // FIXME: DOMいじってるのイクない
+  sendAnswer(id, username, content) {
     if (username == '' || content == '') { return ; }
-    axios
-      .post(`/api/v1/question/id/${this.props.id}/answer`, {name: username.value, content: content.value})
+    return axios
+      .post(`/api/v1/question/id/${id}/answer`, {name: username, content: content})
       .then((res) => {
         console.log('question created');
-        username.value = '';
-        content.value = '';
-        this.setState({preview: ''});
         this.reloadQuestion();
       })
       .catch((err) => {

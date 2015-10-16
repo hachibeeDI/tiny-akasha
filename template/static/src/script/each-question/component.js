@@ -23,6 +23,9 @@ let EachQuestionComponent = React.createClass({
     let username = React.findDOMNode(this.refs.form__user);
     let content = React.findDOMNode(this.refs.form__content);
     this.action.sendAnswer(username, content);
+    username.value = '';
+    content.value = '';
+    this.setState({preview: ''});
   },
 
   renderPreviewMd(ev) {
