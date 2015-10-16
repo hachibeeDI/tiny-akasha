@@ -22,10 +22,16 @@ let EachQuestionComponent = React.createClass({
     ev.preventDefault();
     let username = React.findDOMNode(this.refs.form__user);
     let content = React.findDOMNode(this.refs.form__content);
-    this.action.sendAnswer(username, content);
-    username.value = '';
-    content.value = '';
-    this.setState({preview: ''});
+    // TODO: error用のアクションを作るべし
+    this.action.sendAnswer(username, content)
+      .then(() => {
+        username.value = '';
+        content.value = '';
+        this.setState({preview: ''});
+        this.action.reloadQuestion(this.props.id);
+      })
+      .catch((err) => {console.error(err); })
+      ;
   },
 
   renderPreviewMd(ev) {

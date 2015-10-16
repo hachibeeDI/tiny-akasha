@@ -25,10 +25,7 @@ export default class Actions extends ArdaActionCreator {
       .post(`/api/v1/question/id/${id}/answer`, {name: username, content: content})
       .then((res) => {
         console.log('question created');
-        this.reloadQuestion();
-      })
-      .catch((err) => {
-        console.error(err);
+        return res;
       });
   }
 
