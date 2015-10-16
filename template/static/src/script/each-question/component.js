@@ -23,7 +23,7 @@ let EachQuestionComponent = React.createClass({
     let username = React.findDOMNode(this.refs.form__user);
     let content = React.findDOMNode(this.refs.form__content);
     // TODO: error用のアクションを作るべし
-    this.action.sendAnswer(username, content)
+    this.action.sendAnswer(this.props.id, username.value, content.value)
       .then(() => {
         username.value = '';
         content.value = '';
