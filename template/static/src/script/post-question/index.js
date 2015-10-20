@@ -61,11 +61,12 @@ let PostFrontComponent = React.createClass({
     }
     axios
       .post('/api/v1/question/search', {'word': this.state.searchWord})
-      .then((data) => {
-        console.log('/api/v1/question/search', data);
-        if (!data.error) {
-          this.dispatch('search:questions', data['questions']);
+      .then((res) => {
+        console.log('/api/v1/question/search', res);
+        if (res.data.error) {
+          return Promise.reject(res.data.error);
         }
+        this.dispatch('search:questions', res.data.questions);
       })
       .catch((err) => {
         console.error(err);
