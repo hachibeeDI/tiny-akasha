@@ -18,8 +18,11 @@ const Component = React.createClass({
     axios
       .get('/api/v1/question')
       .then((res) => {
-        if (data.error) { console.error(data.error); return; }
-        this.dispatch('questions:reload');
+        if (res.data.error) {
+          console.error(res.data.error);
+          return Promise.reject(res.data.error);
+        }
+        this.dispatch('questions:reload', res.data);
       })
       .catch((err) => {
         // TODO: emit error
@@ -59,7 +62,10 @@ const Component = React.createClass({
             </label>
             <label className='label--row'>
               内容
-              <textarea className='post-panel__form__content' name='content' valueLink={this.linkState('content')} />
+              <textarea
+                className='post-panel__form__content' name='content'
+                valueLink={this.linkState('content')}
+              />
             </label>
             <input type='submit' value='投稿' />
             <MdPreview addtionalClass='post-panel__preview' content={this.state.content} />

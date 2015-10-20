@@ -17,7 +17,7 @@ class PostPanelContext extends Arda.Context {
 
   delegate(subscribe) {
     super.delegate();
-    subscribe('questions:reload', () => {
+    subscribe('questions:reload', (data) => {
       Routers.main.replaceContext(IndexContext, data)
         .then((ctx) => {
           Routers.post.popContext();
