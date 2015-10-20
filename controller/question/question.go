@@ -5,10 +5,11 @@ package question
 import (
 	"encoding/json"
 	"fmt"
+	simplejson "github.com/bitly/go-simplejson"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
-
 	// "github.com/zenazn/goji"
 	"github.com/zenazn/goji/web"
 
@@ -67,7 +68,12 @@ func GetById(c web.C, w http.ResponseWriter, r *http.Request) {
 }
 
 func QueryByWords(c web.C, w http.ResponseWriter, r *http.Request) {
-	word := r.FormValue("word")
+	body, _ := ioutil.ReadAll(r.Body)
+	js, err := simplejson.NewJson(body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	word := js.Get("word").MustString()
 	// 検索語彙がなければデフォルト表示
 	if word == "" {
 		Get(c, w, r)
