@@ -38,7 +38,7 @@ class PostPanelContext extends Arda.Context {
 }
 
 
-var $c = React.createElement.bind(React);
+const $c = React.createElement.bind(React);
 
 /*
  * 投稿用パネルを開くためのボタン的な意義を持つ
@@ -88,7 +88,9 @@ let PostFrontComponent = React.createClass({
 
 
 export default class PostContext extends Arda.Context {
-  get component() {return PostFrontComponent; }
+  get component() {
+    return PostFrontComponent;
+  }
 
   delegate(subscribe) {
     super.delegate();

@@ -14,13 +14,11 @@ let _renderMd = (txt) => {
       breaks: true,
       tables: true
     });
-  }
-  catch (e) {
+  } catch (e) {
     console.warn('mark down parse error', e);
     return [];
   }
 };
-
 
 
 let MarkdownPreviewerComponent = React.createClass({

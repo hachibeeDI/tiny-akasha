@@ -15,10 +15,8 @@ class _Routers {
 }
 
 
-
-
-var Routers = new _Routers();
-var Navigator = new Grapnel({pushState: true});
+const Routers = new _Routers();
+const Navigator = new Grapnel({pushState: true});
 
 
 export {Routers, Navigator};

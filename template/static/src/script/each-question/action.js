@@ -10,7 +10,7 @@ let loadQuestionData = (id) => {
     axios.get(`/api/v1/question/id/${id}`),
     axios.get(`/api/v1/question/id/${id}/answer`),
   ])
-  .then((res) => { return merge(res[0].data, res[1].data); });
+  .then((res) => merge(res[0].data, res[1].data));
 };
 
 
@@ -20,7 +20,9 @@ export default class Actions extends ArdaActionCreator {
   }
 
   sendAnswer(id, username, content) {
-    if (username == '' || content == '') { return ; }
+    if (username == '' || content == '') {
+      return ;
+    }
     return axios
       .post(`/api/v1/question/id/${id}/answer`, {name: username, content: content})
       .then((res) => {

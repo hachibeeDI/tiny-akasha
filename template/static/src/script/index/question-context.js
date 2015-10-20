@@ -36,9 +36,11 @@ const QuestionComponent = React.createClass({
   mixins: [Arda.mixin],
   componentWillMount() {
     this.action = new QuestionAction(this);
+    console.log(this);
   },
 
   onInnerClick() {
+    console.log(this);
     this.action.showQuestion(this.props.id);
   },
 

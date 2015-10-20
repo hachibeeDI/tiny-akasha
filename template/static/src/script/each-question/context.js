@@ -24,7 +24,9 @@ export default class EachQuestionContext extends Arda.Context {
     super.delegate();
 
     subscribe('back', () => {
-      if (Routers.main.history.length <= 0) { return ; }
+      if (Routers.main.history.length <= 0) {
+        return ;
+      }
       global.history.back();
       Routers.main.popContext();
     });

@@ -6,7 +6,7 @@ import Actions from './action.js';
 let EachQuestionComponent = React.createClass({
   mixins: [Arda.mixin],
 
-  getInitialState(){
+  getInitialState() {
     return {preview: ''};
   },
 
@@ -30,8 +30,7 @@ let EachQuestionComponent = React.createClass({
         this.setState({preview: ''});
         this.action.reloadQuestion(this.props.id);
       })
-      .catch((err) => {console.error(err); })
-      ;
+      .catch((err) => console.error(err));
   },
 
   renderPreviewMd(ev) {

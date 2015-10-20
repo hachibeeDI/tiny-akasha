@@ -7,10 +7,11 @@ import QuestionComponent from './question-context';
 import actions from './actions';
 
 
-var IndexComponent = React.createClass({
+const IndexComponent = React.createClass({
   mixins: [Arda.mixin],
 
   render() {
+    console.log('IndexComponent render', this);
     return $c('div', {},
       $c('ul', {className: 'questions__ul'},
         this.props.questions.map((q) => {
@@ -34,10 +35,14 @@ export default class IndexContext extends Arda.Context {
   delegate(subscribe) {
     super.delegate();
     subscribe('show:questions', (questions) => {
-      this.update((s) => {questions: questions});
+      console.log('show:questions emitted');
+      this.update((s) => {
+        return {questions: questions};
+      });
     });
 
     subscribe('question:loaded', (datas) => {
+      console.log('question:loaded emitted');
       Routers.main.pushContext(
         EachQuestionContext,
         datas
@@ -57,7 +62,7 @@ export default class IndexContext extends Arda.Context {
 
     subscribe('question:delete', (id) => {
       this.update((s) => {
-        let qs = s.questions.filter((q) => { q.id != id});
+        let qs = s.questions.filter((q) => q.id !== id);
         return {questions: qs};
       });
     });
@@ -65,7 +70,7 @@ export default class IndexContext extends Arda.Context {
 
   initState(props) {
     // TODO: これはAPIのクエリ側で適切にソートして対処するように修正
-    var questions = props['questions'] || [];
+    let questions = props['questions'] || [];
     questions.reverse();
     return {questions: questions};
   }

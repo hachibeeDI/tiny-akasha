@@ -9,7 +9,7 @@ let loadQuestionData = (id) => {
     axios.get(`/api/v1/question/id/${id}`),
     axios.get(`/api/v1/question/id/${id}/answer`),
   ])
-  .then((res) => { return merge(res[0].data, res[1].data); });
+  .then((res) => merge(res[0].data, res[1].data));
 };
 
 

@@ -1,4 +1,3 @@
-'use strict';
 
 import {EventEmitter} from 'events';
 
@@ -15,10 +14,9 @@ import EachQuestionContext from './each-question/context.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
-
   // routing
   (() => {
-    var showRoot = () => {
+    function showRoot() {
       axios
         .get('/api/v1/question')
         .then((res) => {
@@ -26,15 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
           let data = res.data;
           if (!data.error) {
             Routers.main.pushContext(IndexContext, data);
-          }
-          else if (data.error === 'no data') {
+          } else if (data.error === 'no data') {
             Routers.main.pushContext(IndexContext, {questions: []});
-          }
-          else {
+          } else {
             console.error(data.error);
           }
         });
-    };
+    }
 
     Navigator.get('/', (req) => {
       showRoot();
