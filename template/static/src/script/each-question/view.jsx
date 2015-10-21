@@ -10,7 +10,7 @@ module.exports = function(component) {
   });
   return (
     <div className="each-question">
-      <button className="each-question__back-button" onClick={component.goBack.bind(component)}>戻る</button>
+      <button className="each-question__back-button" onClick={component.goBack}>戻る</button>
       <h2 className="each-question__title">{component.props.title}</h2>
       <div className="each-question__content" >
         <h4 className="each-question__posted-user">{component.props.username}</h4>
@@ -25,7 +25,7 @@ module.exports = function(component) {
         <textarea
           ref='form__content'
           className="answer-form__content"
-          onChange={throttle(component.renderPreviewMd.bind(component), 200)}>
+          onChange={throttle(component.renderPreviewMd, 200)}>
         </textarea>
         <MarkdownPreviewerComponent content={component.state.preview} addtionalClass='post-panel__preview' />
         <button type='submit'>投稿</button>
