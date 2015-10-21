@@ -46,7 +46,7 @@ const Component = React.createClass({
 
   render() {
     // console.log('post component render');
-    let MdPreview = require('../markdown-previewer/component');
+    let MarkdownPreviewerComponent = require('../markdown-previewer/component');
     return (
       <div className='post-panel--dark__cover'>
         <div className='post-panel'>
@@ -68,7 +68,7 @@ const Component = React.createClass({
               />
             </label>
             <input type='submit' value='投稿' />
-            <MdPreview addtionalClass='post-panel__preview' content={this.state.content} />
+            <MarkdownPreviewerComponent addtionalClass='post-panel__preview' content={this.state.content} />
           </form>
         </div>
       </div>

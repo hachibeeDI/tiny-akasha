@@ -2,7 +2,7 @@ import Arda from 'arda'
 
 import Actions from './action.js';
 
-import mdPreview from '../markdown-previewer/component.js';
+import MarkdownPreviewerComponent from '../markdown-previewer/component.js';
 
 
 let EachAnswerComponent = React.createClass({
@@ -29,7 +29,7 @@ let EachAnswerComponent = React.createClass({
             {this.props.username}
             <button className="answer__delete close__button" onClick={this.delete}></button>
           </h4>
-          <mdPreview content={this.state.render} addtionalClass="answer__text"/ >
+          <MarkdownPreviewerComponent content={this.state.render} addtionalClass="answer__text"/ >
         </div>
       </li>
     );
