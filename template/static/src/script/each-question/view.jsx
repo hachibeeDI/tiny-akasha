@@ -1,11 +1,12 @@
 import throttle from 'lodash/function/throttle';
 
-const eachAnswer = require("./each-answer-component");
+import EachAnswerComponent from "./each-answer-component.js";
 import MarkdownPreviewerComponent from '../markdown-previewer/component.js';
 
 module.exports = function(component) {
   const answers = component.props.answers.map(function(ans) {
-    return React.createElement(eachAnswer, ans);
+    ans.key = ans.id;
+    return React.createElement(EachAnswerComponent, ans);
   });
   return (
     <div className="each-question">

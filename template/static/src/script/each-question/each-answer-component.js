@@ -23,7 +23,7 @@ let EachAnswerComponent = React.createClass({
 
   render() {
     return (
-      <li key={this.props.id} className="answer">
+      <li className="answer">
         <div className="answer__content" >
           <h4 className="answer__user" >
             {this.props.username}
