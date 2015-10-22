@@ -7,8 +7,13 @@ ENV DB_HOST localhost
 ENV DB_PORT 3306
 
 
+RUN echo "" >> /etc/apt/sources.list
+RUN echo "deb http://ftp.jp.debian.org/debian/ jessie main contrib non-free" >> /etc/apt/sources.list
+RUN echo "deb http://ftp.jp.debian.org/debian jessie-updates main contrib" >> /etc/apt/sources.list
+
 RUN apt-get update -yq && apt-get upgrade -yq && \
     apt-get install -yq --no-install-recommends supervisor && \
+    apt-get install -yq --no-install-recommends ca-certificates openssl && \
     apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
 ADD ./env/supervisord/supervisord.conf /etc/supervisor/
