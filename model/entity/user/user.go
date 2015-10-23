@@ -1,10 +1,10 @@
 package user
 
 import (
+	"encoding/hex"
 	"errors"
-	"hex"
 
-	valid "github.com/asaskevich/govalidator"
+	// valid "github.com/asaskevich/govalidator"
 	"github.com/russross/meddler"
 	"golang.org/x/crypto/bcrypt"
 
@@ -12,7 +12,7 @@ import (
 )
 
 type User struct {
-	ID           int    `meddler:"id,pk" json:"id" valid:"required"`
+	Id           int    `meddler:"id,pk" json:"id" valid:"required"`
 	Name         string `meddler:"name" json:"name" valid:"required"`
 	Password     string `meddler:"password" json:"password" valid:"ascii"`
 	ImageUrl     string `meddler:"image_url" json:"image_url" valid:"url"`
@@ -45,26 +45,37 @@ func Init(Id int, Name, Password, ImageUrl, Introduction string) *User {
 }
 
 func (u *User) Insert(db entity.DB) error {
-	result, err := valid.ValidateStruct(u)
+	// result, err := valid.ValidateStruct(u)
+	// if err != nil {
+	// 	return err
+	// }
+	cryptedPass, err := bcrypt.GenerateFromPassword([]byte(u.Password), 10)
 	if err != nil {
 		return err
 	}
-	u.Password, _ = hex.EncodeToString(bcrypt.GenerateFromPassword([]byte(u.Password), 10))
+	u.Password = hex.EncodeToString(cryptedPass)
 	return meddler.Insert(db, "user", u)
 }
 
 func Update(db entity.DB, id int, givenPassword, username, imageUrl, introduction string) error {
 	user := SelectById(db, id)
-	if user := nil {
+	if user == nil {
 		return errors.New("the user does not exists that is accord with id.")
 	}
-	if !bcrypt.CompareHashAndPassword(hex.DecodeString(user.Password), givenPassword) {
-		return errors.New("invalid password")
+	pass, err := hex.DecodeString(user.Password)
+	if err != nil {
+		return err
+	}
+	if compared := bcrypt.CompareHashAndPassword(pass, []byte(givenPassword)); compared != nil {
+		return compared
 	}
 
-	user.Name = username; user.ImageUrl = imageUrl; user.Introduction = introduction
+	user.Name = username
+	user.ImageUrl = imageUrl
+	user.Introduction = introduction
 	return meddler.Update(db, "user", user)
 }
+
 //
 // func Delete(db entity.DB, id int) error {
 // 	result, err := db.Exec("DELETE FROM user WHERE id = ?", id)
@@ -105,15 +116,15 @@ func Update(db entity.DB, id int, givenPassword, username, imageUrl, introductio
 // 	return users
 // }
 //
-// func SelectById(db entity.DB, id int) *User {
-// 	user := new(User)
-// 	err := meddler.QueryRow(db, user, "SELECT * FROM user WHERE id = ?", id)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	return user
-// }
-//
+func SelectById(db entity.DB, id int) *User {
+	user := new(User)
+	err := meddler.QueryRow(db, user, "SELECT * FROM user WHERE id = ?", id)
+	if err != nil {
+		panic(err)
+	}
+	return user
+}
+
 // func SelectByQuestionId(db entity.DB, question_id int) []*User {
 // 	var users []*User
 // 	err := meddler.QueryAll(db, &users, "SELECT * FROM user WHERE question_id = ?", question_id)
