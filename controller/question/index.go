@@ -17,3 +17,11 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintf(w, string(content[:]))
 }
+
+func Login(w http.ResponseWriter, r *http.Request) {
+	content, err := ioutil.ReadFile(helper.DirName + "/template/oauth.html")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Fprintf(w, string(content[:]))
+}

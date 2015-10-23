@@ -7,6 +7,7 @@ import (
 	"github.com/zenazn/goji"
 
 	"github.com/hachibeeDI/tiny-akasha/controller/answer"
+	"github.com/hachibeeDI/tiny-akasha/controller/oauth"
 	"github.com/hachibeeDI/tiny-akasha/controller/question"
 	"github.com/hachibeeDI/tiny-akasha/helper"
 )
@@ -19,6 +20,9 @@ func InitRoute() {
 	fmt.Println("route init")
 
 	goji.Get("/", question.Index)
+	goji.Get("/login", question.Login)
+	goji.Get("/oauth/github/callback", oauth.GithubCallback)
+
 	goji.Get("/view/*", question.Index)
 
 	staticFs := http.FileServer(http.Dir(helper.DirName + "/template/static"))
