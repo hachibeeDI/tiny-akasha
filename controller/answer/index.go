@@ -15,8 +15,8 @@ import (
 )
 
 type NewAnswerBody struct {
-	Name    string `json:name`
-	Content string `json:content`
+	Name    string `json:"name"`
+	Content string `json:"content"`
 }
 
 // url_params:

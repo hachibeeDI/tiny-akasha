@@ -24,7 +24,7 @@ const (
 // via: https://developer.github.com/v3/users/#get-a-single-user
 type GithubUserObj struct {
 	Login              string `json:"login"`
-	Id                 string `json:"id"`
+	Id                 int    `json:"id"`
 	AvatarUrl          string `json:"avatar_url"`
 	GravatarId         string `json:"gravatar_id"`
 	Url                string `json:"url"`
@@ -39,23 +39,29 @@ type GithubUserObj struct {
 	EventsUrl          string `json:"events_url"`
 	Received_eventsUrl string `json:"received_events_url"`
 	Type               string `json:"type"`
-	SiteAdmin          string `json:"site_admin"`
+	SiteAdmin          bool   `json:"site_admin"`
 	Name               string `json:"name"`
 	Company            string `json:"company"`
 	Blog               string `json:"blog"`
 	Location           string `json:"location"`
 	Email              string `json:"email"`
-	Hireable           string `json:"hireable"`
+	Hireable           bool   `json:"hireable"`
 	Bio                string `json:"bio"`
-	PublicRepos        string `json:"public_repos"`
-	PublicGists        string `json:"public_gists"`
-	Followers          string `json:"followers"`
-	Following          string `json:"following"`
+	PublicRepos        int    `json:"public_repos"`
+	PublicGists        int    `json:"public_gists"`
+	Followers          int    `json:"followers"`
+	Following          int    `json:"following"`
 	CreatedAt          string `json:"created_at"`
 	UpdatedAt          string `json:"updated_at"`
 }
 
 var clientSecret = os.Getenv("GITHUB_OAUTH_SECRET")
+
+func NewRequestForGithub(method, url, accessToken string, param url.Values) (*http.Request, error) {
+	req, err := http.NewRequest(method, url, strings.NewReader(param.Encode()))
+	req.Header.Add("Authorization", fmt.Sprintf("token %s", accessToken))
+	return req, err
+}
 
 func getGithubAccessToken(clientId, clientSecret, code string) (*http.Response, error) {
 	authVal := url.Values{}
@@ -75,17 +81,23 @@ func getGithubAccessToken(clientId, clientSecret, code string) (*http.Response, 
 func getGithubUserInfo(access_token string) (GithubUserObj, error) {
 	var guser GithubUserObj
 	fmt.Printf("access_token is %s \n", access_token)
-	if len(access_token) == 0 {
+	if access_token == "" {
 		return guser, errors.New("access_token is empty")
 	}
-	val := url.Values{}
-	val.Add("access_token", access_token)
-	resp, err := http.PostForm("https://api.github.com/user", val)
+	client := &http.Client{}
+	req, _ := NewRequestForGithub("GET", "https://api.github.com/user", access_token, url.Values{})
+	resp, err := client.Do(req)
 	body, _ := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return guser, err
 	}
-	json.Unmarshal(body, &guser)
+	err = json.Unmarshal(body, &guser)
+	fmt.Printf("g user obj  = %s \n", string(body))
+	fmt.Printf("g user obj  = %s \n", guser)
+	if err != nil {
+		fmt.Println(err)
+		return guser, err
+	}
 	return guser, nil
 }
 
@@ -107,7 +119,13 @@ func GithubCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// access_token=e72e16c7e42f292c6912e7710c838347ae178b4a&scope=user%2Cgist&token_type=bearer
-	gobj, _ := getGithubUserInfo(authed.Get("access_token").MustString())
+	gobj, err := getGithubUserInfo(authed.Get("access_token").MustString())
+	if err != nil {
+		log.Println("get Github user information is failed")
+		log.Println(err)
+		fmt.Fprint(w, err)
+		return
+	}
 	fmt.Fprintf(w, "your token is %s \n", authed.Get("access_token").MustString())
 	fmt.Fprintf(w, "your name is %s \n", gobj.Name)
 }
