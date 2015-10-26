@@ -1,6 +1,7 @@
 package oauth
 
 import (
+	// "database/sql"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -13,47 +14,15 @@ import (
 	"strings"
 
 	// "golang.org/x/net/context"
+	"github.com/hachibeeDI/tiny-akasha/model/entity"
 	// "github.com/zenazn/goji/web"
-	// "github.com/hachibeeDI/tiny-akasha/model/entity/user"
+	"github.com/hachibeeDI/tiny-akasha/model/account/github"
+	"github.com/hachibeeDI/tiny-akasha/model/entity/user"
 )
 
 const (
 	clientId = "36df85e7be84b6f6055d"
 )
-
-// via: https://developer.github.com/v3/users/#get-a-single-user
-type GithubUserObj struct {
-	Login              string `json:"login"`
-	Id                 int    `json:"id"`
-	AvatarUrl          string `json:"avatar_url"`
-	GravatarId         string `json:"gravatar_id"`
-	Url                string `json:"url"`
-	HtmlUrl            string `json:"html_url"`
-	FollowersUrl       string `json:"followers_url"`
-	FollowingUrl       string `json:"following_url"`
-	GistsUrl           string `json:"gists_url"`
-	StarredUrl         string `json:"starred_url"`
-	SubscriptionsUrl   string `json:"subscriptions_url"`
-	OrganizationsUrl   string `json:"organizations_url"`
-	ReposUrl           string `json:"repos_url"`
-	EventsUrl          string `json:"events_url"`
-	Received_eventsUrl string `json:"received_events_url"`
-	Type               string `json:"type"`
-	SiteAdmin          bool   `json:"site_admin"`
-	Name               string `json:"name"`
-	Company            string `json:"company"`
-	Blog               string `json:"blog"`
-	Location           string `json:"location"`
-	Email              string `json:"email"`
-	Hireable           bool   `json:"hireable"`
-	Bio                string `json:"bio"`
-	PublicRepos        int    `json:"public_repos"`
-	PublicGists        int    `json:"public_gists"`
-	Followers          int    `json:"followers"`
-	Following          int    `json:"following"`
-	CreatedAt          string `json:"created_at"`
-	UpdatedAt          string `json:"updated_at"`
-}
 
 var clientSecret = os.Getenv("GITHUB_OAUTH_SECRET")
 
@@ -78,8 +47,8 @@ func getGithubAccessToken(clientId, clientSecret, code string) (*http.Response, 
 	return client.Do(req)
 }
 
-func getGithubUserInfo(access_token string) (GithubUserObj, error) {
-	var guser GithubUserObj
+func getGithubUserInfo(access_token string) (github.UserAccount, error) {
+	var guser github.UserAccount
 	fmt.Printf("access_token is %s \n", access_token)
 	if access_token == "" {
 		return guser, errors.New("access_token is empty")
@@ -92,8 +61,6 @@ func getGithubUserInfo(access_token string) (GithubUserObj, error) {
 		return guser, err
 	}
 	err = json.Unmarshal(body, &guser)
-	fmt.Printf("g user obj  = %s \n", string(body))
-	fmt.Printf("g user obj  = %s \n", guser)
 	if err != nil {
 		fmt.Println(err)
 		return guser, err
@@ -119,13 +86,40 @@ func GithubCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// access_token=e72e16c7e42f292c6912e7710c838347ae178b4a&scope=user%2Cgist&token_type=bearer
-	gobj, err := getGithubUserInfo(authed.Get("access_token").MustString())
+	accessToken := authed.Get("access_token").MustString()
+	gobj, err := getGithubUserInfo(accessToken)
 	if err != nil {
 		log.Println("get Github user information is failed")
 		log.Println(err)
 		fmt.Fprint(w, err)
 		return
 	}
-	fmt.Fprintf(w, "your token is %s \n", authed.Get("access_token").MustString())
-	fmt.Fprintf(w, "your name is %s \n", gobj.Name)
+	// fmt.Fprintf(w, "your token is %s \n", accessToken)
+	// fmt.Fprintf(w, "your name is %s \n", gobj.Name)
+	u, err := GithubSignUpOrSignIn(gobj, accessToken)
+	if err != nil || u == nil {
+		fmt.Fprintf(w, "failed to sign in / up on github account = %s \n", err)
+		return
+	}
+	fmt.Fprintf(w, "hello !  %s \n", u.Name)
+}
+
+func GithubSignUpOrSignIn(guser github.UserAccount, accessToken string) (*user.User, error) {
+	db := entity.Db
+	// NOTE: err may sql.ErrNoRows
+	authedUser, err := user.FindByGithubId(db, guser.Id)
+	log.Printf("find by github = %s\n", err)
+	if err == nil && authedUser != nil {
+		log.Printf("authed user = %+v\n", authedUser)
+		return authedUser, nil
+	}
+	u := user.InitByGithubAccount(guser, accessToken)
+	log.Printf("not authed user so create =  %+v\n", u)
+	err = u.Insert(db)
+	if err != nil {
+		log.Printf("insert failed = %s\n", err)
+		return nil, err
+	}
+	log.Printf("insert success = %+v\n", u)
+	return u, err
 }
