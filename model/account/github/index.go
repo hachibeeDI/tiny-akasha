@@ -1,5 +1,12 @@
 package github
 
+import (
+	"os"
+
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/github"
+)
+
 // via: https://developer.github.com/v3/users/#get-a-single-user
 type UserAccount struct {
 	Login             string `json:"login"`
@@ -32,4 +39,12 @@ type UserAccount struct {
 	Following         int    `json:"following"`
 	CreatedAt         string `json:"created_at"`
 	UpdatedAt         string `json:"updated_at"`
+}
+
+var clientSecret = os.Getenv("GITHUB_OAUTH_SECRET")
+var OAuthConf = oauth2.Config{
+	ClientID:     "36df85e7be84b6f6055d",
+	ClientSecret: clientSecret,
+	Scopes:       []string{},
+	Endpoint:     github.Endpoint,
 }
