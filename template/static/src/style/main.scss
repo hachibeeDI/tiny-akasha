@@ -9,6 +9,9 @@
 
 @import './font';
 
+@import './_header.scss';
+@import './_post-panel.scss';
+
 
 .close__button {
   $button-size: 20px;
@@ -26,32 +29,10 @@
 }
 
 
-.header {
-  width: 100%;
-  height: auto;
-  background-color: #275694;
-  color: #FFF;
-  overflow: hidden;
-  padding: 10px 0;
-  &__inner {
-    @include center-width-baranser();
-  }
-  &__title {
-    &__link-to-top {
-      text-decoration: none;
-      border: none;
-      color: #fff;
-    }
-  }
-}
-
-
 .main {
   @include center-width-baranser();
 }
 
-
-@import './post-panel';
 
 .label--row {
   display: block;
