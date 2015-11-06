@@ -31,9 +31,9 @@ let PostFrontComponent = React.createClass({
 /*
 * 投稿用パネルの各項目などを管理する
 */
-class PostPanelContext extends Arda.Context {
+export default class PostPanelContext extends Arda.Context {
   get component() {
-    return Component;
+    return PostFrontComponent;
   }
 
   delegate(subscribe) {
