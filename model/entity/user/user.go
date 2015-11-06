@@ -1,23 +1,35 @@
 package user
 
 import (
+	"encoding/hex"
 	"errors"
-	"hex"
 
-	valid "github.com/asaskevich/govalidator"
+	// valid "github.com/asaskevich/govalidator"
 	"github.com/russross/meddler"
 	"golang.org/x/crypto/bcrypt"
 
+	"github.com/hachibeeDI/tiny-akasha/model/account/github"
 	"github.com/hachibeeDI/tiny-akasha/model/entity"
 )
 
 type User struct {
-	ID           int    `meddler:"id,pk" json:"id" valid:"required"`
+	Id           int    `meddler:"id,pk" json:"id" valid:"required"`
 	Name         string `meddler:"name" json:"name" valid:"required"`
 	Password     string `meddler:"password" json:"password" valid:"ascii"`
 	ImageUrl     string `meddler:"image_url" json:"image_url" valid:"url"`
-	Email        string `meddler:"email" json:"email" valid:"required,url"`
+	Email        string `meddler:"email" json:"email" valid:"required,email"`
 	Introduction string `meddler:"introduction" json:"introduction" valid:"required"`
+	AuthToken    string `meddler:"auth_token" json:"auth_token"`
+	// TODO: テーブル分けるほどのものじゃない？
+	GithubId            int    `meddler:"github_id" json:"github_id"`
+	GithubUrl           string `meddler:"github_url" json:"github_url"`
+	GithubAccessToken   string `meddler:"github_access_token" json:"github_access_token"`
+	FaceBookId          int    `meddler:"facebook_id" json:"facebook_id"`
+	FaceBookUrl         string `meddler:"facebook_url" json:"facebook_url"`
+	FaceBookAccessToken string `meddler:"facebook_access_token" json:"facebook_access_token"`
+	TwitterId           int    `meddler:"twitter_id" json:"twitter_id"`
+	TwitterUrl          string `meddler:"twitter_url" json:"twitter_url"`
+	TwitterAccessToken  string `meddler:"twitter_access_token" json:"twitter_access_token"`
 }
 
 func DisposeTable(db entity.DB) {
@@ -34,7 +46,18 @@ func CreateTableIfNotExists(db entity.DB) {
 				, name varchar(40)
 				, password varchar(40)
 				, image_url varchar(255)
+				, email varchar(255)
 				, introduction MEDIUMTEXT
+				, auth_token varchar(255) UNIQUE
+				, github_id int UNIQUE
+				, github_url varchar(255)
+				, github_access_token varchar(255)
+				, facebook_id int UNIQUE
+				, facebook_url varchar(255)
+				, facebook_access_token varchar(255)
+				, twitter_id int UNIQUE
+				, twitter_url varchar(255)
+				, twitter_access_token varchar(255)
 			)CHARSET=utf8;`); err != nil {
 		panic(err)
 	}
@@ -44,27 +67,50 @@ func Init(Id int, Name, Password, ImageUrl, Introduction string) *User {
 	return &User{Id: Id, Name: Name, Password: Password, ImageUrl: ImageUrl, Introduction: Introduction}
 }
 
+func InitByGithubAccount(guser github.UserAccount, accessToken string) *User {
+	return &User{
+		Name:              guser.Name,
+		Password:          "",
+		ImageUrl:          guser.AvatarUrl,
+		Introduction:      guser.Bio,
+		GithubId:          guser.Id,
+		GithubUrl:         guser.Url,
+		GithubAccessToken: accessToken,
+	}
+}
+
 func (u *User) Insert(db entity.DB) error {
-	result, err := valid.ValidateStruct(u)
+	// result, err := valid.ValidateStruct(u)
+	// if err != nil {
+	// 	return err
+	// }
+	cryptedPass, err := bcrypt.GenerateFromPassword([]byte(u.Password), 10)
 	if err != nil {
 		return err
 	}
-	u.Password, _ = hex.EncodeToString(bcrypt.GenerateFromPassword([]byte(u.Password), 10))
+	u.Password = hex.EncodeToString(cryptedPass)
 	return meddler.Insert(db, "user", u)
 }
 
 func Update(db entity.DB, id int, givenPassword, username, imageUrl, introduction string) error {
-	user := SelectById(db, id)
-	if user := nil {
+	user := FindById(db, id)
+	if user == nil {
 		return errors.New("the user does not exists that is accord with id.")
 	}
-	if !bcrypt.CompareHashAndPassword(hex.DecodeString(user.Password), givenPassword) {
-		return errors.New("invalid password")
+	pass, err := hex.DecodeString(user.Password)
+	if err != nil {
+		return err
+	}
+	if compared := bcrypt.CompareHashAndPassword(pass, []byte(givenPassword)); compared != nil {
+		return compared
 	}
 
-	user.Name = username; user.ImageUrl = imageUrl; user.Introduction = introduction
+	user.Name = username
+	user.ImageUrl = imageUrl
+	user.Introduction = introduction
 	return meddler.Update(db, "user", user)
 }
+
 //
 // func Delete(db entity.DB, id int) error {
 // 	result, err := db.Exec("DELETE FROM user WHERE id = ?", id)
@@ -105,15 +151,21 @@ func Update(db entity.DB, id int, givenPassword, username, imageUrl, introductio
 // 	return users
 // }
 //
-// func SelectById(db entity.DB, id int) *User {
-// 	user := new(User)
-// 	err := meddler.QueryRow(db, user, "SELECT * FROM user WHERE id = ?", id)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	return user
-// }
-//
+func FindById(db entity.DB, id int) *User {
+	user := new(User)
+	err := meddler.QueryRow(db, user, "SELECT * FROM user WHERE id = ?", id)
+	if err != nil {
+		panic(err)
+	}
+	return user
+}
+
+func FindByGithubId(db entity.DB, githubId int) (*User, error) {
+	user := new(User)
+	err := meddler.QueryRow(db, user, "SELECT * FROM user WHERE github_id = ?", githubId)
+	return user, err
+}
+
 // func SelectByQuestionId(db entity.DB, question_id int) []*User {
 // 	var users []*User
 // 	err := meddler.QueryAll(db, &users, "SELECT * FROM user WHERE question_id = ?", question_id)

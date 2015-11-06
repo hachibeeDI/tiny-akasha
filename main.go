@@ -17,6 +17,7 @@ import (
 	"github.com/hachibeeDI/tiny-akasha/model/entity"
 	"github.com/hachibeeDI/tiny-akasha/model/entity/answer"
 	"github.com/hachibeeDI/tiny-akasha/model/entity/question"
+	"github.com/hachibeeDI/tiny-akasha/model/entity/user"
 )
 
 func getDBADDR() (string, string) {
@@ -68,15 +69,17 @@ func PrePareDB() *sql.DB {
 	mysql.Close()
 
 	conToDb := makeConnectionString("akasha")
-	fmt.Println(conToDb)
+	fmt.Printf("connection info to db = %s\n", conToDb)
 	db, err := sql.Open("mysql", conToDb)
 	if err != nil {
+		fmt.Printf("connection failed = ", err)
 		panic(err)
 	}
 
 	// question.DisposeTable(db)
 	question.CreateTableIfNotExists(db)
 	answer.CreateTableIfNotExists(db)
+	user.CreateTableIfNotExists(db)
 	return db
 }
 
