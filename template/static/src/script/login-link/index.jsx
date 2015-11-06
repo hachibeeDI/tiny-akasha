@@ -17,7 +17,7 @@ let PostFrontComponent = React.createClass({
     let jwtPayload = this.props.localToken === ''? {} : jwt.decode(this.props.localToken);
     if (jwtPayload.user_id) {
       return (
-        <a class='button' href='/login'>Login</button>
+        <a class='button' href='/login'>Login</a>
       );
     } else {
       return (
