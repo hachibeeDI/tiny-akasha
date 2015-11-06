@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tiny Akasha | OAuth callback</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/static/dist/style/main.css">
+    <link rel="shortcut icon" href="">
+  </head>
+
+  <body>
+    <!-- TODO: {{.Error}} のケース -->
+    <div class="loading-cover"></div>
+
+    <!-- SCRIPTS -->
+    <script type="text/javascript" src="/static/vendor/jsonwebtoken/index.js"></script>
+    <script>
+      localStorage.setItem('localToken', '{{.JWT}}');
+      location.href = '/';
+    </script>
+  </body>
+</html>
+

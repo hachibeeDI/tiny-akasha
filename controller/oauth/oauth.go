@@ -4,6 +4,7 @@ import (
 	// "database/sql"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -13,6 +14,7 @@ import (
 	"github.com/hachibeeDI/tiny-akasha/model/entity"
 	// "github.com/zenazn/goji/web"
 	"github.com/hachibeeDI/tiny-akasha/model/account/github"
+	"github.com/hachibeeDI/tiny-akasha/model/account/jwt"
 	"github.com/hachibeeDI/tiny-akasha/model/entity/user"
 )
 
@@ -49,15 +51,17 @@ func GithubCallback(w http.ResponseWriter, r *http.Request) {
 	}
 	// fmt.Fprintf(w, "your token is %s \n", accessToken)
 	// fmt.Fprintf(w, "your name is %s \n", gobj.Name)
-	u, err := GithubSignUpOrSignIn(gobj, accessToken)
+	u, err := githubSignUpOrSignIn(gobj, accessToken)
 	if err != nil || u == nil {
 		fmt.Fprintf(w, "failed to sign in / up on github account = %s \n", err)
 		return
 	}
-	fmt.Fprintf(w, "hello !  %s \n", u.Name)
+	token := jwt.InitFromUser(u)
+	tmpl := template.Must(template.ParseFiles("template/oauth-callback.html"))
+	tmpl.Execute(w, token)
 }
 
-func GithubSignUpOrSignIn(guser github.UserAccount, accessToken *oauth2.Token) (*user.User, error) {
+func githubSignUpOrSignIn(guser github.UserAccount, accessToken *oauth2.Token) (*user.User, error) {
 	db := entity.Db
 	// NOTE: err may sql.ErrNoRows
 	authedUser, err := user.FindByGithubId(db, guser.Id)
