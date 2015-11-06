@@ -19,6 +19,7 @@ type User struct {
 	ImageUrl     string `meddler:"image_url" json:"image_url" valid:"url"`
 	Email        string `meddler:"email" json:"email" valid:"required,email"`
 	Introduction string `meddler:"introduction" json:"introduction" valid:"required"`
+	AuthToken    string `meddler:"auth_token" json:"auth_token"`
 	// TODO: テーブル分けるほどのものじゃない？
 	GithubId            int    `meddler:"github_id" json:"github_id"`
 	GithubUrl           string `meddler:"github_url" json:"github_url"`
@@ -47,6 +48,7 @@ func CreateTableIfNotExists(db entity.DB) {
 				, image_url varchar(255)
 				, email varchar(255)
 				, introduction MEDIUMTEXT
+				, auth_token varchar(255) UNIQUE
 				, github_id int UNIQUE
 				, github_url varchar(255)
 				, github_access_token varchar(255)
