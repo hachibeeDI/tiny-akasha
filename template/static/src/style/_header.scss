@@ -1,3 +1,6 @@
+@import "_color";
+@Import "_size-definitions";
+
 
 .header {
   width: 100%;
@@ -10,6 +13,8 @@
     @include center-width-baranser();
   }
   &__title {
+    display: inline-block;
+    width: 90%;
     &__link-to-top {
       text-decoration: none;
       border: none;
@@ -19,3 +24,20 @@
 }
 
 
+#app-login-panel {
+  display: inline-block;
+}
+
+@mixin _button__login-state-style() {
+  background-color: $white;
+  color: $text-black;
+  border-radius: 2px;
+}
+.button__login-state--sign-up {
+  @include _button__login-state-style();
+  padding: 6px 8px;
+}
+.button__login-state--sign-uped {
+  @include _button__login-state-style();
+  padding: 6px 6px;
+}

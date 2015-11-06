@@ -17,11 +17,16 @@ let PostFrontComponent = React.createClass({
     let jwtPayload = this.props.localToken === ''? {} : jwt.decode(this.props.localToken);
     if (jwtPayload.user_id) {
       return (
-        <a class='button' href='/login'>Login</a>
+        <a
+          className='button__login-state--sign-uped'
+          href='/'
+          data-bg-image={jwtPayload.image_url}
+          onClick={this.onClickLogout}>Logout
+        </a>
       );
     } else {
       return (
-        <a class='button' href='/' onClick={this.onClickLogout}>Logout</a>
+        <a className='button__login-state--sign-up' href='/login'>Login</a>
       );
     }
   }
