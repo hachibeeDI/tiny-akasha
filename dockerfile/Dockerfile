@@ -22,12 +22,14 @@ ADD ./env/supervisord/goji.conf /etc/supervisor/conf.d/
 
 RUN mkdir -p /var/http/tiny-akasha/template/static/dist/js; \
     mkdir -p /var/http/tiny-akasha/template/static/vendor/react; \
+    mkdir -p /var/http/tiny-akasha/template/static/vendor/jsonwebtoken; \
     mkdir -p /var/http/tiny-akasha/template/static/vendor/font/octicons
 
 # deploy server side files
+ADD ./key_for_token /var/http/tiny-akasha/
+ADD ./key_for_token.pub /var/http/tiny-akasha/
 ADD ./src/main /var/http/tiny-akasha/
-ADD ./src/templates/index.html /var/http/tiny-akasha/template/
-ADD ./src/templates/oauth.html /var/http/tiny-akasha/template/
+ADD ./src/templates/*.html /var/http/tiny-akasha/template/
 
 # deploy frontend files
 ADD ./src/templates/static/dist/js/entry.js /var/http/tiny-akasha/template/static/dist/js/
@@ -35,6 +37,7 @@ ADD ./src/templates/static/dist/style/main.css /var/http/tiny-akasha/template/st
 
 ADD ./src/templates/static/vendor/react/react-with-addons.min.js /var/http/tiny-akasha/template/static/vendor/react/
 ADD ./src/templates/static/vendor/react/react-with-addons.js /var/http/tiny-akasha/template/static/vendor/react/
+ADD ./src/templates/static/vendor/jsonwebtoken/index.js /var/http/tiny-akasha/template/static/vendor/jsonwebtoken/
 ADD ./src/templates/static/vendor/octicons/* /var/http/tiny-akasha/template/static/vendor/font/octicons/
 
 EXPOSE 80

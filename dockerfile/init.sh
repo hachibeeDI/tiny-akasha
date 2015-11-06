@@ -7,5 +7,6 @@ cp ../main src/
 cp -rf ../template/*.html src/templates/
 cp -rf ../template/static/dist/ src/templates/static/
 cp -rf ../template/static/node_modules/react/dist/ src/templates/static/vendor/react
+cp -rf ../template/static/node_modules/jsonwebtoken/ src/templates/static/vendor/jsonwebtoken
 cp -rf ../template/static/node_modules/octicons/octicons/ src/templates/static/vendor/
 
